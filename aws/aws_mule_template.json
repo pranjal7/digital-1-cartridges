@@ -1,5 +1,5 @@
 {
-    "Description": "Creating the environment for Mule",
+    "Description": "Creating the EC2 Intances with Docker containers for Mule Runtime",
     "Mappings": {
         "RegionMap": {
             "eu-west-1": {
@@ -66,7 +66,7 @@
             "AllowedPattern": "vpc-[0-9a-z]{8}",
             "Description": "ADOP Core VPC id e.g. vpc-1234ab678",
             "Type": "String"
-        },
+        }
     },
     "Resources": {
         "AFP4MuleEnvironmentEc2Instance": {
