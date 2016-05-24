@@ -95,7 +95,7 @@
                 },
                 "NetworkInterfaces": [
                     {
-                        "AssociatePublicIpAddress": "false",
+                        "AssociatePublicIpAddress": "true",
                         "DeleteOnTermination": "true",
                         "DeviceIndex": "0",
                         "GroupSet": [
@@ -133,6 +133,7 @@
                                 "wget ",
                                 {
                                     "Ref": "MuleEELicense"
+                                },
                                 },
                                 " -O /data/mule/conf/muleLicenseKey.lic\n",
                                 "wget https://s3-eu-west-1.amazonaws.com/adop-framework-afp4mule/conf/mule_ee/sf-api.zip -O /data/mule/apps/sf-api.zip ; unzip /data/mule/apps/sf-api.zip -d /data/mule/apps/sf-api\ndocker run --dns=$IP --name=mongodb --restart=always -e SERVICE_27017_NAME=afp4mule-mongodb-env001 -v /data/mongodb:/data/db -dt -p 27017:27017 -e MONGO_DB=admin -e MONGO_USER=afp4mule -e MONGO_PASSWORD=afp4mule docker.accenture.com/afp4mule/mongodb:",
