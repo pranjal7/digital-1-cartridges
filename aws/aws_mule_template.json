@@ -1,5 +1,5 @@
 {
-    "Description": "Creating the level 1 application architecture for the AFP4Mule framework.",
+    "Description": "Creating the environment for Mule",
     "Mappings": {
         "RegionMap": {
             "eu-west-1": {
@@ -67,18 +67,6 @@
             "Description": "ADOP Core VPC id e.g. vpc-1234ab678",
             "Type": "String"
         },
-        "hbSolrVersion": {
-            "AllowedPattern": "(latest|[0-9].*)",
-            "Default": "4.10.4",
-            "Description": "Assume the latest stable docker image/tag if no version is specified. i.e. 0.1.1, 0.1.2",
-            "Type": "String"
-        },
-        "hbTomcatVersion": {
-            "AllowedPattern": "(latest|[0-9].*)",
-            "Default": "8",
-            "Description": "Assume the latest stable docker image/tag if no version is specified. i.e. 0.1.1, 0.1.2",
-            "Type": "String"
-        }
     },
     "Resources": {
         "AFP4MuleEnvironmentEc2Instance": {
@@ -140,8 +128,6 @@
                                 "NODE=afp4mule-env001\n",
                                 "export IP=$(hostname --ip-address)\n",
                                 "docker login -u devops.training -p ztNsaJPyrSyrPdtn -e devops.training@accenture.com docker.accenture.com\n",
-                                "docker run -d -e SERVICE_IGNORE=true -h $NODE --restart=always -p $IP:8301:8301/udp -p $IP:8301:8301/tcp -p $IP:8302:8302/udp -p $IP:8302:8302/tcp -p $IP:8400:8400 -p $IP:8500:8500/tcp -p $IP:8300:8300/tcp -p $IP:8300:8300/udp -p $IP:53:53/udp -p $IP:53:53/tcp progrium/consul -advertise $IP -dc ADOP -retry-join 10.0.1.5 -retry-interval 60s -recursor 8.8.8.8\n",
-                                "docker run -d -v /var/run/docker.sock:/tmp/docker.sock -h $(hostname) --restart=always gliderlabs/registrator consul://$IP:8500 ; docker run --net=host --privileged --rm cap10morgan/conntrack -F\n",
                                 "mkdir -p /data/{mule,mongodb,rabbitmq}/\n",
                                 "mkdir -p /data/mule/{apps,conf}\n",
                                 "wget ",
@@ -162,10 +148,6 @@
                                 {
                                     "Ref": "MuleESBVersion"
                                 },
-                                "\n",
-                                "docker run --dns=$IP --name=mule-mongo-browser --restart=always -e SERVICE_8085_NAME=afp4mule-mongo-browser -p 8085:8081 --link mongodb:mongo -e ME_CONFIG_MONGODB_ADMINUSERNAME=afp4mule -e ME_CONFIG_MONGODB_ADMINPASSWORD=afp4mule -td knickers/mongo-express\n",
-                                "docker run -td --dns=$IP --restart=always --privileged -e RSYSLOG_IP_PORT=logstash.service.adop.consul:514 -v /data/mule/logs:/var/log/mule docker.accenture.com/dcsc/rsyslog:0.1.0",
-                                " curl https://s3-eu-west-1.amazonaws.com/adop-framework-afp4mule/scripts/get_deployment_key.sh | bash\n",
                                 "\n"
                             ]
                         ]
@@ -173,84 +155,7 @@
                 }
             },
             "Type": "AWS::EC2::Instance"
-        },
-        "AFP4MuleFrameworkEc2Instance": {
-            "Properties": {
-                "BlockDeviceMappings": [
-                    {
-                        "DeviceName": "/dev/xvda",
-                        "Ebs": {
-                            "DeleteOnTermination": "true",
-                            "VolumeSize": 50
-                        }
-                    }
-                ],
-                "ImageId": {
-                    "Fn::FindInMap": [
-                        "RegionMap",
-                        {
-                            "Ref": "AWS::Region"
-                        },
-                        "AMI"
-                    ]
-                },
-                "InstanceType": "t2.medium",
-                "KeyName": {
-                    "Ref": "KeyName"
-                },
-                "NetworkInterfaces": [
-                    {
-                        "AssociatePublicIpAddress": "false",
-                        "DeleteOnTermination": "true",
-                        "DeviceIndex": "0",
-                        "GroupSet": [
-                            {
-                                "Ref": "DefaultSecurityGroup"
-                            }
-                        ],
-                        "PrivateIpAddress": "10.0.6.5",
-                        "SubnetId": {
-                            "Ref": "ApplicationSubnet"
-                        }
-                    }
-                ],
-                "Tags": [
-                    {
-                        "Key": "Name",
-                        "Value": "ADOP-AFP4Mule-MuleFramework"
-                    },
-                    {
-                        "Key": "Project",
-                        "Value": "ADOP-AFP4Mule"
-                    }
-                ],
-                "UserData": {
-                    "Fn::Base64": {
-                        "Fn::Join": [
-                            "",
-                            [
-                                "#!/bin/bash\n",
-                                "NODE=afp4mule-framework\n",
-                                "export IP=$(hostname --ip-address)\n",
-                                "docker login -u devops.training -p ztNsaJPyrSyrPdtn -e devops.training@accenture.com docker.accenture.com\n",
-                                "docker run -d -e SERVICE_IGNORE=true -h $NODE --restart=always -p $IP:8301:8301/udp -p $IP:8301:8301/tcp -p $IP:8302:8302/udp -p $IP:8302:8302/tcp -p $IP:8400:8400 -p $IP:8500:8500/tcp -p $IP:8300:8300/tcp -p $IP:8300:8300/udp -p $IP:53:53/udp -p $IP:53:53/tcp progrium/consul -advertise $IP -dc ADOP -retry-join 10.0.1.5 -retry-interval 60s -recursor 8.8.8.8\n",
-                                "docker run -d -v /var/run/docker.sock:/tmp/docker.sock -h $(hostname) --restart=always gliderlabs/registrator consul://$IP:8500 ; docker run --net=host --privileged --rm cap10morgan/conntrack -F\n",
-                                "mkdir -p /data/tomcat/webapps/\n",
-                                "wget https://s3-eu-west-1.amazonaws.com/adop-framework-afp4mule/conf/muleframework/AFP4Mule.war -O /data/tomcat/webapps/ROOT.war\n",
-                                "docker run -td --dns=$IP --restart=always -e SERVICE_CHECK_SCRIPT=\"curl --silent --fail $IP:80/journeys/muleFramework\" -e SERVICE_8080_NAME=afp4mule-framework --name afpmule-framework -p 80:8080 -v /data/tomcat/webapps/:/usr/local/tomcat/webapps/ -e NEXUS_USER=admin -e NEXUS_PASSWORD=afp4mule -e NEXUS_URL=54.77.226.73/nexus docker.accenture.com/afp4mule/mule_framework:",
-                                {
-                                    "Ref": "AFP4MuleFrameworkVersion"
-                                },
-                                "\n",
-                                " curl https://s3-eu-west-1.amazonaws.com/adop-framework-afp4mule/scripts/get_deployment_key.sh | bash\n",
-                                "\n"
-                            ]
-                        ]
-                    }
-                }
-            },
-            "Type": "AWS::EC2::Instance"
-        },
+        }, 
         "ApplicationSubnet": {
             "Properties": {
                 "CidrBlock": "10.0.6.0/24",
@@ -312,119 +217,6 @@
                 }
             },
             "Type": "AWS::EC2::RouteTable"
-        },
-        "SoapUIEc2Instance": {
-            "Properties": {
-                "BlockDeviceMappings": [
-                    {
-                        "DeviceName": "/dev/xvda",
-                        "Ebs": {
-                            "DeleteOnTermination": "true",
-                            "VolumeSize": 50
-                        }
-                    }
-                ],
-                "ImageId": {
-                    "Fn::FindInMap": [
-                        "RegionMap",
-                        {
-                            "Ref": "AWS::Region"
-                        },
-                        "AMI"
-                    ]
-                },
-                "InstanceType": "t2.medium",
-                "KeyName": {
-                    "Ref": "KeyName"
-                },
-                "NetworkInterfaces": [
-                    {
-                        "AssociatePublicIpAddress": "false",
-                        "DeleteOnTermination": "true",
-                        "DeviceIndex": "0",
-                        "GroupSet": [
-                            {
-                                "Ref": "DefaultSecurityGroup"
-                            },
-                            {
-                                "Ref": "SoapUISecurityGroup"
-                            }
-                        ],
-                        "PrivateIpAddress": "10.0.6.9",
-                        "SubnetId": {
-                            "Ref": "ApplicationSubnet"
-                        }
-                    }
-                ],
-                "Tags": [
-                    {
-                        "Key": "Name",
-                        "Value": "ADOP-AFP4Mule-SoapUI"
-                    },
-                    {
-                        "Key": "Project",
-                        "Value": "ADOP-AFP4Mule"
-                    }
-                ],
-                "UserData": {
-                    "Fn::Base64": {
-                        "Fn::Join": [
-                            "",
-                            [
-                                "#!/bin/bash\n",
-                                "NODE=soapui\n",
-                                "export IP=$(hostname --ip-address)\n",
-                                "docker login -u devops.training -p ztNsaJPyrSyrPdtn -e devops.training@accenture.com docker.accenture.com\n",
-                                "docker run -d -e SERVICE_IGNORE=true -h $NODE --restart=always -p $IP:8301:8301/udp -p $IP:8301:8301/tcp -p $IP:8302:8302/udp -p $IP:8302:8302/tcp -p $IP:8400:8400 -p $IP:8500:8500/tcp -p $IP:8300:8300/tcp -p $IP:8300:8300/udp -p $IP:53:53/udp -p $IP:53:53/tcp progrium/consul -advertise $IP -dc ADOP -retry-join 10.0.1.5 -retry-interval 60s -recursor 8.8.8.8\n",
-                                "docker run -d -v /var/run/docker.sock:/tmp/docker.sock -h $(hostname) --restart=always gliderlabs/registrator consul://$IP:8500 ; docker run --net=host --privileged --rm cap10morgan/conntrack -F\n",
-                                "yum update -y docker\n",
-                                "echo 'OPTIONS=\"--insecure-registry 10.0.0.10:5000\"' | tee -a /etc/sysconfig/docker\n",
-                                "service docker restart\n",
-                                " curl https://s3-eu-west-1.amazonaws.com/adop-framework-afp4mule/scripts/get_deployment_key.sh | bash\n",
-                                "\n"
-                            ]
-                        ]
-                    }
-                }
-            },
-            "Type": "AWS::EC2::Instance"
-        },
-        "SoapUISecurityGroup": {
-            "Properties": {
-                "GroupDescription": "Enabling access to SoapUI for stubs",
-                "SecurityGroupEgress": [
-                    {
-                        "CidrIp": "0.0.0.0/0",
-                        "FromPort": "0",
-                        "IpProtocol": "tcp",
-                        "ToPort": "65535"
-                    },
-                    {
-                        "CidrIp": "0.0.0.0/0",
-                        "FromPort": "0",
-                        "IpProtocol": "udp",
-                        "ToPort": "65535"
-                    }
-                ],
-                "SecurityGroupIngress": [
-                    {
-                        "CidrIp": "10.0.0.0/16",
-                        "FromPort": "8088",
-                        "IpProtocol": "tcp",
-                        "ToPort": "8100"
-                    }
-                ],
-                "Tags": [
-                    {
-                        "Key": "Name",
-                        "Value": "SoapUISecurityGroup"
-                    }
-                ],
-                "VpcId": {
-                    "Ref": "VpcId"
-                }
-            },
-            "Type": "AWS::EC2::SecurityGroup"
         },
         "SubnetPrivateRouteTableAssoc": {
             "Properties": {
