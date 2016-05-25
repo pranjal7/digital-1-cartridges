@@ -66,6 +66,10 @@
             "AllowedPattern": "vpc-[0-9a-z]{8}",
             "Description": "ADOP Core VPC id e.g. vpc-1234ab678",
             "Type": "String"
+        },
+		"InternetGateway": {
+            "Description": "ADOP Core Internet Gateway",
+            "Type": "String"
         }
     },
     "Resources": {
@@ -153,7 +157,38 @@
                 }
             },
             "Type": "AWS::EC2::Instance"
-        }, 
+        },
+		"PublicSubnetPublicRouteTableAssoc": {
+            "Properties": {
+                "RouteTableId": {
+                    "Ref": "PublicRouteTable"
+                },
+                "SubnetId": {
+                    "Ref": "ApplicationSubnet"
+                }
+            },
+            "Type": "AWS::EC2::SubnetRouteTableAssociation"
+        },
+		"PublicRouteDefault": {
+            "Properties": {
+                "DestinationCidrBlock": "0.0.0.0/0",
+                "GatewayId": {
+                    "Ref": "InternetGateway"
+                },
+                "RouteTableId": {
+                    "Ref": "PublicRouteTable"
+                }
+            },
+            "Type": "AWS::EC2::Route"
+        },
+        "PublicRouteTable": {
+            "Properties": {
+                "VpcId": {
+                    "Ref": "VpcId"
+                }
+            },
+            "Type": "AWS::EC2::RouteTable"
+        },
         "ApplicationSubnet": {
             "Properties": {
                 "CidrBlock": "10.0.6.0/24",
