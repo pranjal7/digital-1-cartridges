@@ -148,6 +148,8 @@
                                 {
                                     "Ref": "MuleESBVersion"
                                 },
+								"\n",
+								" curl https://s3-eu-west-1.amazonaws.com/adop-framework-afp4mule/scripts/get_deployment_key.sh | bash\n",
                                 "\n"
                             ]
                         ]
