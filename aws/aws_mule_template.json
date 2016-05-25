@@ -47,10 +47,6 @@
             "Description": "NAT box instance id",
             "Type": "String"
         },
-        "PublicIp": {
-            "Description": "ADOP reverse proxy public ip",
-            "Type": "String"
-        },
 		"PrivateIp": {
             "Description": "Mule Env Private IP",
             "Type": "String"
