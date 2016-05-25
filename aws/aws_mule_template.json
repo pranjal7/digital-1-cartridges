@@ -113,10 +113,6 @@
                     {
                         "Key": "Name",
                         "Value": "ADOP-AFP4Mule-MuleEnvironment"
-                    },
-                    {
-                        "Key": "Project",
-                        "Value": "ADOP-AFP4Mule"
                     }
                 ],
                 "UserData": {
