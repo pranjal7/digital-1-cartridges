@@ -43,12 +43,16 @@
             "Type": "String"
         },
         "NatInstanceId": {
-            "AllowedPattern": "i-[0-9a-z]{8}",
-            "Description": "ADOP Core NAT box instance id",
+            "AllowedPattern": "nat-[0-9a-z]{18}",
+            "Description": "NAT box instance id",
             "Type": "String"
         },
         "PublicIp": {
             "Description": "ADOP reverse proxy public ip",
+            "Type": "String"
+        },
+		"PrivateIp": {
+            "Description": "Mule Env Private IP",
             "Type": "String"
         },
         "RabbitMQVersion": {
@@ -103,7 +107,7 @@
                                 "Ref": "DefaultSecurityGroup"
                             }
                         ],
-                        "PrivateIpAddress": "10.0.6.6",
+                        "PrivateIpAddress": {"Ref": "PrivateIp"},
                         "SubnetId": {
                             "Ref": "ApplicationSubnet"
                         }
