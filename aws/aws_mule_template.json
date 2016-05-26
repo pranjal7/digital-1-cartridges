@@ -42,7 +42,7 @@
             "Description": "Assume the latest stable docker image/tag if no version is specified. i.e. 0.1.1, 0.1.2",
             "Type": "String"
         },
-        "NatInstanceId": {
+        "NatGatewayId": {
             "AllowedPattern": "nat-[0-9a-z]{17}",
             "Description": "NAT box instance id",
             "Type": "String"
@@ -199,8 +199,8 @@
         "PrivateRouteDefault": {
             "Properties": {
                 "DestinationCidrBlock": "0.0.0.0/0",
-                "InstanceId": {
-                    "Ref": "NatInstanceId"
+                "NatGatewayId": {
+                    "Ref": "NatGatewayId"
                 },
                 "RouteTableId": {
                     "Ref": "PrivateRouteTable"
@@ -212,7 +212,13 @@
             "Properties": {
                 "VpcId": {
                     "Ref": "VpcId"
-                }
+                },
+					"Tags": [
+						{
+                        "Key": "Name",
+                        "Value": "MuleSubnetRouteTable"
+						}
+					]
             },
             "Type": "AWS::EC2::RouteTable"
         },
