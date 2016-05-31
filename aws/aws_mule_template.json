@@ -214,7 +214,7 @@
         },
         "SubnetPrivateRouteTableAssoc": {
             "Properties": {
-                "RouteTableId": { "Ref": "rtb-2a3f8d4e" },
+                "RouteTableId": "rtb-2a3f8d4e",
                 "SubnetId": { "Ref": "ApplicationSubnet" }
             },
             "Type": "AWS::EC2::SubnetRouteTableAssociation"
