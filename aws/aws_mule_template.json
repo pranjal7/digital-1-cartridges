@@ -44,7 +44,7 @@
         },
         "NatGatewayId": {
             "AllowedPattern": "nat-[0-9a-z]{17}",
-            "Description": "NAT box instance id",
+            "Description": "NAT Gateway id",
             "Type": "String"
         },
 		"PrivateIp": {
@@ -182,37 +182,27 @@
                 ],
                 "SecurityGroupIngress": [
                     {
-                        "CidrIp": {
-                            "Ref": "VpcCidr"
-                        },
+                        "CidrIp": { "Ref": "VpcCidr" },
                         "FromPort": "0",
                         "IpProtocol": "tcp",
                         "ToPort": "65535"
                     }
                 ],
-                "VpcId": {
-                    "Ref": "VpcId"
-                }
+                "VpcId": { "Ref": "VpcId" }
             },
             "Type": "AWS::EC2::SecurityGroup"
         },
         "PrivateRouteDefault": {
             "Properties": {
                 "DestinationCidrBlock": "0.0.0.0/0",
-                "NatGatewayId": {
-                    "Ref": "NatGatewayId"
-                },
-                "RouteTableId": {
-                    "Ref": "PrivateRouteTable"
-                }
+                "NatGatewayId": { "Ref": "NatGatewayId" },
+                "RouteTableId": { "Ref": "PrivateRouteTable" }
             },
             "Type": "AWS::EC2::Route"
         },
         "PrivateRouteTable": {
             "Properties": {
-                "VpcId": {
-                    "Ref": "VpcId"
-                },
+                "VpcId": { "Ref": "VpcId" },
 					"Tags": [
 						{
                         "Key": "Name",
@@ -224,12 +214,8 @@
         },
         "SubnetPrivateRouteTableAssoc": {
             "Properties": {
-                "RouteTableId": {
-                    "Ref": "PrivateRouteTable"
-                },
-                "SubnetId": {
-                    "Ref": "ApplicationSubnet"
-                }
+                "RouteTableId": { "Ref": "rtb-2a3f8d4e" },
+                "SubnetId": { "Ref": "ApplicationSubnet" }
             },
             "Type": "AWS::EC2::SubnetRouteTableAssociation"
         }
