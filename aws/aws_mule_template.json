@@ -157,9 +157,7 @@
         "ApplicationSubnet": {
             "Properties": {
                 "CidrBlock": "10.0.6.0/24",
-                "VpcId": {
-                    "Ref": "VpcId"
-                }
+                "VpcId": { "Ref": "VpcId" }
             },
             "Type": "AWS::EC2::Subnet"
         },
@@ -214,7 +212,7 @@
         },
         "SubnetPrivateRouteTableAssoc": {
             "Properties": {
-                "RouteTableId": "rtb-2a3f8d4e",
+                "RouteTableId": "rtb-0577cf61",
                 "SubnetId": { "Ref": "ApplicationSubnet" }
             },
             "Type": "AWS::EC2::SubnetRouteTableAssociation"
