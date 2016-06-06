@@ -42,9 +42,9 @@
             "Description": "Assume the latest stable docker image/tag if no version is specified. i.e. 0.1.1, 0.1.2",
             "Type": "String"
         },
-        "NatGatewayId": {
-            "AllowedPattern": "nat-[0-9a-z]{17}",
-            "Description": "NAT Gateway id",
+        "PrivateApplicationSubnetId": {
+            "AllowedPattern": "subnet-[0-9a-z]{8}",
+            "Description": "Private Application Subnet Id",
             "Type": "String"
         },
 		"PrivateIp": {
@@ -95,7 +95,7 @@
                 },
                 "NetworkInterfaces": [
                     {
-                        "AssociatePublicIpAddress": "true",
+                        "AssociatePublicIpAddress": "false",
                         "DeleteOnTermination": "true",
                         "DeviceIndex": "0",
                         "GroupSet": [
@@ -104,9 +104,7 @@
                             }
                         ],
                         "PrivateIpAddress": {"Ref": "PrivateIp"},
-                        "SubnetId": {
-                            "Ref": "ApplicationSubnet"
-                        }
+                        "SubnetId": { "Ref": "PrivateApplicationSubnetId" }
                     }
                 ],
                 "Tags": [
@@ -153,13 +151,6 @@
                 }
             },
             "Type": "AWS::EC2::Instance"
-        },	
-        "ApplicationSubnet": {
-            "Properties": {
-                "CidrBlock": "10.0.6.0/24",
-                "VpcId": { "Ref": "VpcId" }
-            },
-            "Type": "AWS::EC2::Subnet"
         },
         "DefaultSecurityGroup": {
             "Properties": {
@@ -189,33 +180,6 @@
                 "VpcId": { "Ref": "VpcId" }
             },
             "Type": "AWS::EC2::SecurityGroup"
-        },
-        "PrivateRouteDefault": {
-            "Properties": {
-                "DestinationCidrBlock": "0.0.0.0/0",
-                "NatGatewayId": { "Ref": "NatGatewayId" },
-                "RouteTableId": { "Ref": "PrivateRouteTable" }
-            },
-            "Type": "AWS::EC2::Route"
-        },
-        "PrivateRouteTable": {
-            "Properties": {
-                "VpcId": { "Ref": "VpcId" },
-					"Tags": [
-						{
-                        "Key": "Name",
-                        "Value": "MuleSubnetRouteTable"
-						}
-					]
-            },
-            "Type": "AWS::EC2::RouteTable"
-        },
-        "SubnetPrivateRouteTableAssoc": {
-            "Properties": {
-                "RouteTableId": "rtb-0577cf61",
-                "SubnetId": { "Ref": "ApplicationSubnet" }
-            },
-            "Type": "AWS::EC2::SubnetRouteTableAssociation"
         }
     }
 }
