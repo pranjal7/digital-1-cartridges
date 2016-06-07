@@ -8,38 +8,9 @@
         }
     },
     "Parameters": {
-        "AFP4MuleFrameworkVersion": {
-            "AllowedPattern": "(latest|[0-9].*)",
-            "Default": "0.0.3",
-            "Description": "Assume the latest stable docker image/tag if no version is specified. i.e. 0.1.1, 0.1.2",
-            "Type": "String"
-        },
-        "GetJenkinsSSHKeyVersion": {
-            "AllowedPattern": "(latest|[0-9].*)",
-            "Default": "0.0.1",
-            "Description": "Assume the latest stable docker image/tag if no version is specified. i.e. 0.1.1, 0.1.2",
-            "Type": "String"
-        },
         "KeyName": {
             "Default": "academy_key",
             "Description": "Key-pair name to use. Defaults to academy_key for DevOpsAcademy. On real project use alternative key!",
-            "Type": "String"
-        },
-        "MongoDBVersion": {
-            "AllowedPattern": "(latest|[0-9].*)",
-            "Default": "0.0.2",
-            "Description": "Assume the latest stable docker image/tag if no version is specified. i.e. 0.1.1, 0.1.2",
-            "Type": "String"
-        },
-        "MuleEELicense": {
-            "Default": "https://s3-eu-west-1.amazonaws.com/adop-framework-afp4mule/conf/mule_ee/muleLicenseKey.lic",
-            "Description": "Url to Mule EE License",
-            "Type": "String"
-        },
-        "MuleESBVersion": {
-            "AllowedPattern": "(latest|[0-9].*)",
-            "Default": "2.0.0",
-            "Description": "Assume the latest stable docker image/tag if no version is specified. i.e. 0.1.1, 0.1.2",
             "Type": "String"
         },
         "PrivateApplicationSubnetId": {
@@ -49,12 +20,6 @@
         },
 		"PrivateIp": {
             "Description": "Mule Env Private IP",
-            "Type": "String"
-        },
-        "RabbitMQVersion": {
-            "AllowedPattern": "(latest|[0-9].*)",
-            "Default": "0.0.2",
-            "Description": "Assume the latest stable docker image/tag if no version is specified. i.e. 0.1.1, 0.1.2",
             "Type": "String"
         },
         "VpcCidr": {
@@ -71,15 +36,6 @@
     "Resources": {
         "AFP4MuleEnvironmentEc2Instance": {
             "Properties": {
-                "BlockDeviceMappings": [
-                    {
-                        "DeviceName": "/dev/xvda",
-                        "Ebs": {
-                            "DeleteOnTermination": "true",
-                            "VolumeSize": 50
-                        }
-                    }
-                ],
                 "ImageId": {
                     "Fn::FindInMap": [
                         "RegionMap",
@@ -98,11 +54,7 @@
                         "AssociatePublicIpAddress": "false",
                         "DeleteOnTermination": "true",
                         "DeviceIndex": "0",
-                        "GroupSet": [
-                            {
-                                "Ref": "DefaultSecurityGroup"
-                            }
-                        ],
+                        "GroupSet": [{ "Ref": "DefaultSecurityGroup" }],
                         "PrivateIpAddress": {"Ref": "PrivateIp"},
                         "SubnetId": { "Ref": "PrivateApplicationSubnetId" }
                     }
@@ -110,45 +62,9 @@
                 "Tags": [
                     {
                         "Key": "Name",
-                        "Value": "ADOP-AFP4Mule-MuleEnvironment"
+                        "Value": "D1SE-Mule-Instance"
                     }
-                ],
-                "UserData": {
-                    "Fn::Base64": {
-                        "Fn::Join": [
-                            "",
-                            [
-                                "#!/bin/bash\n",
-                                "NODE=afp4mule-env001\n",
-                                "export IP=$(hostname --ip-address)\n",
-                                "docker login -u devops.training -p ztNsaJPyrSyrPdtn -e devops.training@accenture.com docker.accenture.com\n",
-                                "mkdir -p /data/{mule,mongodb,rabbitmq}/\n",
-                                "mkdir -p /data/mule/{apps,conf}\n",
-                                "wget ",
-                                {
-                                    "Ref": "MuleEELicense"
-                                },
-                                " -O /data/mule/conf/muleLicenseKey.lic\n",
-                                "wget https://s3-eu-west-1.amazonaws.com/adop-framework-afp4mule/conf/mule_ee/sf-api.zip -O /data/mule/apps/sf-api.zip ; unzip /data/mule/apps/sf-api.zip -d /data/mule/apps/sf-api\ndocker run --dns=$IP --name=mongodb --restart=always -e SERVICE_27017_NAME=afp4mule-mongodb-env001 -v /data/mongodb:/data/db -dt -p 27017:27017 -e MONGO_DB=admin -e MONGO_USER=afp4mule -e MONGO_PASSWORD=afp4mule docker.accenture.com/afp4mule/mongodb:",
-                                {
-                                    "Ref": "MongoDBVersion"
-                                },
-                                "\ndocker run --dns=$IP --name=rabbitmq --restart=always -e SERVICE_5672_NAME=afp4mule-rabbitmq-env001 -v /data/rabbitmq:/var/lib/rabbitmq -td -p 8080:8080 -p 5672:5672 -p 15672:15672 --hostname $(hostname) --name rabbitmq -e RABBITMQ_DEFAULT_USER=rabbitmq -e RABBITMQ_DEFAULT_PASS=rabbitmq123 -e RABBITMQ_EXCHANGES=\"Exception:fanout MessageHub:fanout\" docker.accenture.com/afp4mule/rabbitmq:",
-                                {
-                                    "Ref": "RabbitMQVersion"
-                                },
-                                "\n",
-                                "docker run --dns=$IP --name=mule-runtime --restart=always -e SERVICE_8084_NAME=afp4mule-mule-env001 -v /data/mule/conf/:/opt/mule/conf/ -v /data/mule/apps/:/opt/mule/apps/ -v /data/mule/logs:/opt/mule/logs -p 5000:5000 -p 1098:1098 -p 7777:7777 -p 8081:8081 -p 8084:8084 -td docker.accenture.com/afp4mule/mule_ee:",
-                                {
-                                    "Ref": "MuleESBVersion"
-                                },
-								"\n",
-								" curl https://s3-eu-west-1.amazonaws.com/adop-framework-afp4mule/scripts/get_deployment_key.sh | bash\n",
-                                "\n"
-                            ]
-                        ]
-                    }
-                }
+                ]
             },
             "Type": "AWS::EC2::Instance"
         },
