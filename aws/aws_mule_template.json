@@ -3,13 +3,13 @@
     "Mappings": {
         "RegionMap": {
             "eu-west-1": {
-                "AMI": "ami-9bd7fbec"
+                "AMI": "ami-7abd0209"
             }
         }
     },
     "Parameters": {
         "KeyName": {
-            "Default": "academy_key",
+            "Default": "D1SESwarmTestKey",
             "Description": "Key-pair name to use. Defaults to academy_key for DevOpsAcademy. On real project use alternative key!",
             "Type": "String"
         },
