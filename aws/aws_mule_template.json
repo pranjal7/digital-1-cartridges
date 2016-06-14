@@ -9,8 +9,8 @@
     },
     "Parameters": {
         "KeyName": {
-            "Default": "D1SESwarmTestKey",
-            "Description": "Key-pair name to use. Defaults to academy_key for DevOpsAcademy. On real project use alternative key!",
+            "Default": "d1se_key",
+            "Description": "Key-pair name to use.",
             "Type": "String"
         },
         "PrivateApplicationSubnetId": {
