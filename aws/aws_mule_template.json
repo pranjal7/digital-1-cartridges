@@ -100,6 +100,18 @@
                     },
 					{
                         "CidrIp": { "Ref": "VpcCidr" },
+                        "FromPort": "7946",
+                        "IpProtocol": "udp",
+                        "ToPort": "7946"
+                    },
+					{
+                        "CidrIp": { "Ref": "VpcCidr" },
+                        "FromPort": "4789",
+                        "IpProtocol": "udp",
+                        "ToPort": "4789"
+                    },
+					{
+                        "CidrIp": { "Ref": "VpcCidr" },
                         "FromPort": "0",
                         "IpProtocol": "tcp",
                         "ToPort": "65535"
