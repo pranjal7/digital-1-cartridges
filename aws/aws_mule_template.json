@@ -49,7 +49,7 @@
                 "KeyName": {
                     "Ref": "KeyName"
                 },
-				"IamInstanceProfile" : {"Ref" : "IAMAppInstanceProfile"},
+				"IamInstanceProfile" : {"Ref" : "IAMInstanceProfileMule"},
                 "NetworkInterfaces": [
                     {
                         "AssociatePublicIpAddress": "false",
@@ -110,10 +110,10 @@
             },
             "Type": "AWS::EC2::SecurityGroup"
         },
-		"IAMAppInstanceProfile": {
+		"IAMInstanceProfileMule": {
 			"Properties": {
 				"Path": "/",
-				"Roles":  "IAMD1SEDefaultS3BucketAccessRole"
+				"Roles":  "IAMRoleD1SEDefaultS3BucketAccess"
 			},
 			"Type": "AWS::IAM::InstanceProfile"
 		}
