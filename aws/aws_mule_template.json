@@ -113,7 +113,7 @@
 		"IAMInstanceProfileMule": {
 			"Properties": {
 				"Path": "/",
-				"Roles":  "IAMRoleD1SEDefaultS3BucketAccess"
+				"Roles":  ["IAMRoleD1SEDefaultS3BucketAccess"]
 			},
 			"Type": "AWS::IAM::InstanceProfile"
 		}
