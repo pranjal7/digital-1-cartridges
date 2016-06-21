@@ -110,10 +110,38 @@
             },
             "Type": "AWS::EC2::SecurityGroup"
         },
+		"IAMRoleMule": {
+			"Properties": {
+				"AssumeRolePolicyDocument": { 
+					"Version" : "2012-10-17",
+					"Statement": [ {
+						"Effect": "Allow",
+						"Principal": { "Service": [ "ec2.amazonaws.com" ] },
+					"Action": [ "sts:AssumeRole" ]
+					} ] 
+				},
+				"Path": "/",
+				"Policies": [ {
+					"PolicyName": "D1SEDefaultBucketAccess",
+					"PolicyDocument": {
+						"Version" : "2012-10-17",
+						"Statement": [ {
+							"Effect": "Allow",
+							"Action": "s3:GetObject",
+							"Resource": [	
+								"arn:aws:s3:::D1SEDefaultBucket", 
+								"arn:aws:s3:::D1SEDefaultBucket/*"
+							]	
+						} ]
+					}
+				} ]
+			},
+			"Type": "AWS::IAM::Role"
+		},
 		"IAMInstanceProfileMule": {
 			"Properties": {
 				"Path": "/",
-				"Roles":  ["IAMRoleD1SEDefaultS3BucketAccess"]
+				"Roles":  [{ "Ref": "IAMRoleMule" }]
 			},
 			"Type": "AWS::IAM::InstanceProfile"
 		}
