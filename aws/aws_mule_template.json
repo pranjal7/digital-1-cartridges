@@ -55,7 +55,7 @@
                         "AssociatePublicIpAddress": "false",
                         "DeleteOnTermination": "true",
                         "DeviceIndex": "0",
-                        "GroupSet": [{ "Ref": "DefaultSecurityGroup" }],
+                        "GroupSet": [{ "Ref": "DefaultSecurityGroup" }, { "Ref": "MuleDockerSwarmSecurityGroup" }],
                         "PrivateIpAddress": {"Ref": "PrivateIp"},
                         "SubnetId": { "Ref": "PrivateApplicationSubnetId" }
                     }
@@ -149,6 +149,77 @@
                         "FromPort": "0",
                         "IpProtocol": "tcp",
                         "ToPort": "65535"
+                    }
+                ],
+                "VpcId": { "Ref": "VpcId" }
+            },
+            "Type": "AWS::EC2::SecurityGroup"
+        },
+		"MuleDockerSwarmSecurityGroup": {
+            "Properties": {
+                "GroupDescription": "Security Group which enables ports needed for Docker swarm",
+                "SecurityGroupEgress": [
+                    {
+                        "CidrIp": "0.0.0.0/0",
+                        "FromPort": "0",
+                        "IpProtocol": "tcp",
+                        "ToPort": "65535"
+                    },
+					                    {
+                        "CidrIp": "0.0.0.0/0",
+                        "FromPort": "0",
+                        "IpProtocol": "udp",
+                        "ToPort": "65535"
+                    }
+                ],
+                "SecurityGroupIngress": [
+                    {
+                        "CidrIp": "10.0.0.0/16",
+                        "IpProtocol": "tcp",
+						"FromPort": "2375",
+                        "ToPort": "2375"
+                    },
+					{
+                        "CidrIp": "10.0.0.0/16",
+                        "IpProtocol": "tcp",
+						"FromPort": "2376",
+                        "ToPort": "2376"
+                    },
+					{
+                        "CidrIp": "10.0.0.0/16",
+                        "IpProtocol": "tcp",
+						"FromPort": "2376",
+                        "ToPort": "2376"
+                    },
+					{
+                        "CidrIp": { "Ref": "VpcCidr" },
+                        "FromPort": "3375",
+                        "IpProtocol": "tcp",
+                        "ToPort": "3376"
+                    },
+					{
+                        "CidrIp": "10.0.0.0/16",
+                        "IpProtocol": "udp",
+						"FromPort": "4789",
+                        "ToPort": "4789"
+                    },
+					{
+                        "CidrIp": "10.0.0.0/16",
+                        "IpProtocol": "tcp",
+						"FromPort": "8300",
+                        "ToPort": "8302"
+                    },
+					{
+                        "CidrIp": "10.0.0.0/16",
+                        "IpProtocol": "udp",
+						"FromPort": "8301",
+                        "ToPort": "8302"
+                    },
+					{
+                        "CidrIp": "10.0.0.0/16",
+                        "IpProtocol": "udp",
+						"FromPort": "53",
+                        "ToPort": "53"
                     }
                 ],
                 "VpcId": { "Ref": "VpcId" }
