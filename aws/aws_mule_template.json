@@ -55,7 +55,7 @@
                         "AssociatePublicIpAddress": "false",
                         "DeleteOnTermination": "true",
                         "DeviceIndex": "0",
-                        "GroupSet": [{ "Ref": "DefaultSecurityGroup" }, { "Ref": "MuleDockerSwarmSecurityGroup" }],
+                        "GroupSet": [{ "Ref": "DefaultSecurityGroup" }, { "Ref": "MuleDockerSwarmSecurityGroup" }, { "Ref": "MuleDockerOverlaySecurityGroup" }],
                         "PrivateIpAddress": {"Ref": "PrivateIp"},
                         "SubnetId": { "Ref": "PrivateApplicationSubnetId" }
                     }
@@ -220,6 +220,53 @@
                         "IpProtocol": "udp",
 						"FromPort": "53",
                         "ToPort": "53"
+                    }
+                ],
+                "VpcId": { "Ref": "VpcId" }
+            },
+            "Type": "AWS::EC2::SecurityGroup"
+        },
+		"MuleDockerOverlaySecurityGroup": {
+            "Properties": {
+                "GroupDescription": "Security Group which enables ports needed for Docker Overlay networking",
+                "SecurityGroupEgress": [
+                    {
+                        "CidrIp": "10.0.0.0/16",
+                        "IpProtocol": "udp",
+						"FromPort": "4789",
+                        "ToPort": "4789"
+                    },
+                    {
+                        "CidrIp": "10.0.0.0/16",
+						"IpProtocol": "udp",
+						"FromPort": "7946",
+                        "ToPort": "7946"
+                    },
+					{
+                        "CidrIp": "10.0.0.0/16",
+						"IpProtocol": "tcp",
+						"FromPort": "7946",
+                        "ToPort": "7946"
+                    }
+                ],
+                "SecurityGroupIngress": [
+                    {
+                        "CidrIp": "10.0.0.0/16",
+                        "IpProtocol": "udp",
+						"FromPort": "4789",
+                        "ToPort": "4789"
+                    },
+                    {
+                        "CidrIp": "10.0.0.0/16",
+						"IpProtocol": "udp",
+						"FromPort": "7946",
+                        "ToPort": "7946"
+                    },
+					{
+                        "CidrIp": "10.0.0.0/16",
+						"IpProtocol": "tcp",
+						"FromPort": "7946",
+                        "ToPort": "7946"
                     }
                 ],
                 "VpcId": { "Ref": "VpcId" }
