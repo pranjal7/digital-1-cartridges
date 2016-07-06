@@ -67,11 +67,11 @@
                             [
                                 "#!/bin/bash\n",
                                 "sudo su\n",
-								"aws s3 cp s3://d1sedemobucket/DevOpsScripts/wrapperSetV2.sh /home/ec2-user/wrapperSetV2.sh \n",
-								"chmod 754 /home/ec2-user/wrapperSetV2.sh \n",
-								"sed -i -e 's/\r$//' /home/ec2-user/wrapperSetV2.sh \n",
+								"aws s3 cp s3://d1sedemobucket/DevOpsScripts/wrapperSetup.sh /home/ec2-user/wrapperSetup.sh \n",
+								"chmod 754 /home/ec2-user/wrapperSetup.sh \n",
+								"sed -i -e 's/\r$//' /home/ec2-user/wrapperSetup.sh \n",
 								
-								"aws s3 cp s3://d1sedemobucket/DevOpsScripts/swarmSetupEnh.sh /home/ec2-user/swarm/swarmSetup.sh \n",
+								"aws s3 cp s3://d1sedemobucket/DevOpsScripts/swarmSetup.sh /home/ec2-user/swarm/swarmSetup.sh \n",
 								"chmod 754 /home/ec2-user/swarm/swarmSetup.sh \n",
 								"sed -i -e 's/\r$//' /home/ec2-user/swarm/swarmSetup.sh \n",
 								
@@ -98,7 +98,7 @@
 								
 								"/home/ec2-user/security/OS_patching.sh \n",
 								"/home/ec2-user/gluster/GlusterFS_Setup.sh -t client \n",
-								"/home/ec2-user/wrapperSetV2.sh -t node -r mule \n",
+								"/home/ec2-user/wrapperSetup.sh -t node -r mule \n",
 								"\n"
                                 
                             ]
@@ -108,7 +108,7 @@
                 "Tags": [
                     {
                         "Key": "Name",
-                        "Value": "D1SE-Mule-Instance"
+                        "Value": "D1SE-Mule"
                     }
                 ]
             },
