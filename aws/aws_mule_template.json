@@ -220,6 +220,12 @@
                         "IpProtocol": "udp",
 						"FromPort": "53",
                         "ToPort": "53"
+                    },
+					{
+                        "CidrIp": "10.0.0.0/16",
+                        "IpProtocol": "tcp",
+						"FromPort": "8600",
+                        "ToPort": "8600"
                     }
                 ],
                 "VpcId": { "Ref": "VpcId" }
