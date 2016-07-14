@@ -96,6 +96,15 @@
 								"aws s3 cp s3://d1sedemobucket/Certificates/mule-cert.pem /home/ec2-user/.certs/cert.pem \n",
 								"# sed -i -e 's/\r$//' /home/ec2-user/.certs/cert.pem \n",
 								
+								"aws s3 cp s3://d1sedemobucket/Certificates/glusterCerts/client66.key /etc/ssl/glusterfs.key \n",
+								"# sed -i -e 's/\r$//' /etc/ssl/glusterfs.key \n",
+								
+								"aws s3 cp s3://d1sedemobucket/Certificates/glusterCerts/client66.pem /etc/ssl/glusterfs.pem \n",
+								"# sed -i -e 's/\r$//' /etc/ssl/glusterfs.pem \n",
+								
+								"aws s3 cp s3://d1sedemobucket/Certificates/glusterCerts/glusterfs.ca /etc/ssl/glusterfs.ca \n",
+								"# sed -i -e 's/\r$//' /etc/ssl/glusterfs.ca \n",
+								
 								"/home/ec2-user/security/OS_patching.sh \n",
 								"/home/ec2-user/gluster/GlusterFS_Setup.sh -t client \n",
 								"/home/ec2-user/wrapperSetup.sh -t node -r mule \n",
