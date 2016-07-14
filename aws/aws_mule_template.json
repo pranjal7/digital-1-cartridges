@@ -87,6 +87,10 @@
 								"chmod 754 /home/ec2-user/security/OS_patching.sh \n",
 								"sed -i -e 's/\r$//' /home/ec2-user/security/OS_patching.sh \n",
 								
+								"aws s3 cp s3://d1sedemobucket/SecurityScripts/Antivirus.sh /home/ec2-user/security/Antivirus.sh \n",
+								"chmod 754 /home/ec2-user/security/Antivirus.sh \n",
+								"sed -i -e 's/\r$//' /home/ec2-user/security/Antivirus.sh \n",
+								
 								"aws s3 cp s3://d1sedemobucket/Certificates/ca.pem /home/ec2-user/.certs/ca.pem \n",
 								"# sed -i -e 's/\r$//' /home/ec2-user/.certs/ca.pem \n",
 								
@@ -106,6 +110,7 @@
 								"# sed -i -e 's/\r$//' /etc/ssl/glusterfs.ca \n",
 								
 								"/home/ec2-user/security/OS_patching.sh \n",
+								"/home/ec2-user/security/Antivirus.sh \n",
 								"/home/ec2-user/gluster/GlusterFS_Setup.sh -t client \n",
 								"/home/ec2-user/wrapperSetup.sh -t node -r mule \n",
 								"\n"
