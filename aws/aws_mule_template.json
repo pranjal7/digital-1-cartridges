@@ -75,9 +75,17 @@
 								"chmod 754 /home/ec2-user/swarm/swarmSetup.sh \n",
 								"sed -i -e 's/\r$//' /home/ec2-user/swarm/swarmSetup.sh \n",
 								
+								"aws s3 cp s3://d1sedemobucket/SecurityScripts/seccomp/mule/swarm-seccomp.json /home/ec2-user/mule/swarm-seccomp.json \n",
+								"chmod 754 /home/ec2-user/mule/swarm-seccomp.json \n",
+								"sed -i -e 's/\r$//' /home/ec2-user/mule/swarm-seccomp.json \n",
+								
                                 "aws s3 cp s3://d1sedemobucket/DevOpsScripts/muleSetup.sh /home/ec2-user/mule/muleSetup.sh \n",
 								"chmod 754 /home/ec2-user/mule/muleSetup.sh \n",
 								"sed -i -e 's/\r$//' /home/ec2-user/mule/muleSetup.sh \n",
+								
+								"aws s3 cp s3://d1sedemobucket/SecurityScripts/seccomp/mule/docker.accenture.com-afp4mule-mongodb-seccomp.json /home/ec2-user/mule/docker.accenture.com-afp4mule-mongodb-seccomp.json \n",
+								"chmod 754 /home/ec2-user/mule/docker.accenture.com-afp4mule-mongodb-seccomp.json \n",
+								"sed -i -e 's/\r$//' /home/ec2-user/mule/docker.accenture.com-afp4mule-mongodb-seccomp.json \n",
 								
 								"aws s3 cp s3://d1sedemobucket/DevOpsScripts/GlusterFS_Setup.sh /home/ec2-user/gluster/GlusterFS_Setup.sh \n",
 								"chmod 754 /home/ec2-user/gluster/GlusterFS_Setup.sh \n",
