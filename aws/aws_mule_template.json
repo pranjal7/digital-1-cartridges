@@ -83,6 +83,14 @@
 								"chmod 754 /home/ec2-user/mule/muleSetup.sh \n",
 								"sed -i -e 's/\r$//' /home/ec2-user/mule/muleSetup.sh \n",
 								
+								"aws s3 cp s3://d1sedemobucket/SecurityScripts/seccomp/mule/docker.accenture.com-afp4mule-mule_ee-seccomp.json /home/ec2-user/mule/docker.accenture.com-afp4mule-mule_ee-seccomp.json \n",
+								"chmod 754 /home/ec2-user/mule/docker.accenture.com-afp4mule-mule_ee-seccomp.json \n",
+								"sed -i -e 's/\r$//' /home/ec2-user/mule/docker.accenture.com-afp4mule-mule_ee-seccomp.json \n",
+								
+								"aws s3 cp s3://d1sedemobucket/SecurityScripts/seccomp/mule/docker.accenture.com-afp4mule-rabbitmq-seccomp.json /home/ec2-user/mule/docker.accenture.com-afp4mule-rabbitmq-seccomp.json \n",
+								"chmod 754 /home/ec2-user/mule/docker.accenture.com-afp4mule-rabbitmq-seccomp.json \n",
+								"sed -i -e 's/\r$//' /home/ec2-user/mule/docker.accenture.com-afp4mule-rabbitmq-seccomp.json \n",
+								
 								"aws s3 cp s3://d1sedemobucket/SecurityScripts/seccomp/mule/docker.accenture.com-afp4mule-mongodb-seccomp.json /home/ec2-user/mule/docker.accenture.com-afp4mule-mongodb-seccomp.json \n",
 								"chmod 754 /home/ec2-user/mule/docker.accenture.com-afp4mule-mongodb-seccomp.json \n",
 								"sed -i -e 's/\r$//' /home/ec2-user/mule/docker.accenture.com-afp4mule-mongodb-seccomp.json \n",
