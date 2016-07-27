@@ -60,6 +60,14 @@
                         "SubnetId": { "Ref": "PrivateApplicationSubnetId" }
                     }
                 ],
+				"BlockDeviceMappings" : [
+					{
+						"DeviceName" : "/dev/xvda",
+						"Ebs" : {
+							"VolumeSize" : "20"
+						}
+					}
+				],
 				"UserData": {
                     "Fn::Base64": {
                         "Fn::Join": [
@@ -67,6 +75,7 @@
                             [
                                 "#!/bin/bash\n",
                                 "sudo su\n",
+								"/sbin/resize2fs /dev/xvda\n",
 								"aws s3 cp s3://d1sedemobucket/DevOpsScripts/wrapperSetup.sh /home/ec2-user/wrapperSetup.sh \n",
 								"chmod 754 /home/ec2-user/wrapperSetup.sh \n",
 								"sed -i -e 's/\r$//' /home/ec2-user/wrapperSetup.sh \n",
