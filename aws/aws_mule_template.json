@@ -55,7 +55,7 @@
                         "AssociatePublicIpAddress": "false",
                         "DeleteOnTermination": "true",
                         "DeviceIndex": "0",
-                        "GroupSet": [{ "Ref": "DefaultSecurityGroup" }, { "Ref": "MuleDockerSwarmSecurityGroup" }, { "Ref": "MuleDockerOverlaySecurityGroup" }],
+                        "GroupSet": [{ "Ref": "MuleDefaultSecurityGroup" }, { "Ref": "MuleDockerSwarmSecurityGroup" }, { "Ref": "MuleDockerOverlaySecurityGroup" }],
                         "PrivateIpAddress": {"Ref": "PrivateIp"},
                         "SubnetId": { "Ref": "PrivateApplicationSubnetId" }
                     }
@@ -153,7 +153,7 @@
             },
             "Type": "AWS::EC2::Instance"
         },
-        "DefaultSecurityGroup": {
+        "MuleDefaultSecurityGroup": {
             "Properties": {
                 "GroupDescription": "Enabling access to all IPs and below listed ports",
                 "SecurityGroupEgress": [
@@ -190,7 +190,13 @@
                         "ToPort": "65535"
                     }
                 ],
-                "VpcId": { "Ref": "VpcId" }
+                "VpcId": { "Ref": "VpcId" },
+				"Tags": [
+                    {
+                        "Key": "Name",
+                        "Value": "MuleDefaultSecurityGroup"
+                    }
+                ]
             },
             "Type": "AWS::EC2::SecurityGroup"
         },
@@ -267,7 +273,13 @@
                         "ToPort": "8600"
                     }
                 ],
-                "VpcId": { "Ref": "VpcId" }
+                "VpcId": { "Ref": "VpcId" },
+				"Tags": [
+                    {
+                        "Key": "Name",
+                        "Value": "MuleDockerSwarmSecurityGroup"
+                    }
+                ]
             },
             "Type": "AWS::EC2::SecurityGroup"
         },
@@ -314,7 +326,13 @@
                         "ToPort": "7946"
                     }
                 ],
-                "VpcId": { "Ref": "VpcId" }
+                "VpcId": { "Ref": "VpcId" },
+				"Tags": [
+                    {
+                        "Key": "Name",
+                        "Value": "MuleDockerOverlaySecurityGroup"
+                    }
+                ]
             },
             "Type": "AWS::EC2::SecurityGroup"
         },
