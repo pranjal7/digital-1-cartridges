@@ -6,12 +6,6 @@
 			"ap-southeast-2": { "AMI": "ami-d9d7f9ba" }
         }
     },
-    "myLogGroup": {
-    "Type": "AWS::Logs::LogGroup",
-    "Properties": {
-        "RetentionInDays": 7
-    }
-},
     "Parameters": {
         "KeyName": {
             "Default": "d1se_key",
