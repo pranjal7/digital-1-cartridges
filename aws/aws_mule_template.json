@@ -75,11 +75,11 @@
                                 "#!/bin/bash\n",
                                 "sudo su\n",
 								"/sbin/resize2fs /dev/xvda\n",
-                                "chmod 754 $\"{WORKSPACE}\"/mule_environment_template/env-creation-scripts/DevOpsScripts"
+                                "chmod 754 $\"{WORKSPACE}\"/mule_environment_template/env-creation-scripts/DevOpsScripts",
 
 								"sed -i -e 's/\r$//' $\"{WORKSPACE}\"/mule_environment_template/env-creation-scripts/DevOpsScripts/wrapperSetup.sh \n",
 								
-								"sed -i -e 's/\r$//' $"\{WORKSPACE}\"/mule_environment_template/env-creation-scripts/DevOpsScripts/swarmSetup.sh \n",
+								"sed -i -e 's/\r$//' $\"{WORKSPACE}\"/mule_environment_template/env-creation-scripts/DevOpsScripts/swarmSetup.sh \n",
 								
 								"sed -i -e 's/\r$//' $\"{WORKSPACE}\"/mule_environment_template/env-creation-scripts/SecurityScripts/seccomp/mule/swarm-seccomp.json \n",
 								
