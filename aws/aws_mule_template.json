@@ -78,15 +78,12 @@
                                 "chmod 754 $\"{WORKSPACE}\"/mule_environment_template/env-creation-scripts/DevOpsScripts",
 
 								"sed -i -e 's/\r$//' $\"{WORKSPACE}\"/mule_environment_template/env-creation-scripts/DevOpsScripts/wrapperSetup.sh \n",
-								"./$\"{WORKSPACE}\"/mule_environment_template/env-creation-scripts/DevOpsScripts/wrapperSetup.sh",
-
+								
 								"sed -i -e 's/\r$//' $\"{WORKSPACE}\"/mule_environment_template/env-creation-scripts/DevOpsScripts/swarmSetup.sh \n",
-                                "./$\"{WORKSPACE}\"/mule_environment_template/env-creation-scripts/DevOpsScripts/swarmSetup.sh \n",
 								
 								"sed -i -e 's/\r$//' $\"{WORKSPACE}\"/mule_environment_template/env-creation-scripts/SecurityScripts/seccomp/mule/swarm-seccomp.json \n",
 								
 								"sed -i -e 's/\r$//' $\"{WORKSPACE}\"/mule_environment_template/env-creation-scripts/DevOpsScripts/muleSetup.sh \n",
-                                "./$\"{WORKSPACE}\"/mule_environment_template/env-creation-scripts/DevOpsScripts/muleSetup.sh \n",
 								
 								"sed -i -e 's/\r$//' $\"{WORKSPACE}\"/mule_environment_template/env-creation-scripts/SecurityScripts/seccomp/mule/docker.accenture.com-afp4mule-mule_ee-seccomp.json \n",
 								
@@ -95,13 +92,10 @@
 								"sed -i -e 's/\r$//' $\"{WORKSPACE}\"/mule_environment_template/env-creation-scripts/SecurityScripts/seccomp/mule/docker.accenture.com-afp4mule-mongodb-seccomp.json \n",
 								
 								"sed -i -e 's/\r$//' $\"{WORKSPACE}\"/mule_environment_template/env-creation-scripts/DevOpsScripts/GlusterFS_Setup.sh \n",
-								"./$\"{WORKSPACE}\"/mule_environment_template/env-creation-scripts/DevOpsScripts/GlusterFS_Setup.sh \n",
-
+								
 								"sed -i -e 's/\r$//' $\"{WORKSPACE}\"/mule_environment_template/env-creation-scripts/SecurityScripts/OS_patching.sh \n",
-                                "./$\"{WORKSPACE}\"/mule_environment_template/env-creation-scripts/SecurityScripts/OS_patching.sh \n",
 								
 								"sed -i -e 's/\r$//' $\"{WORKSPACE}\"/mule_environment_template/env-creation-scripts/SecurityScripts/Antivirus.sh \n",
-                                "./$\"{WORKSPACE}\"/mule_environment_template/env-creation-scripts/SecurityScripts/Antivirus.sh \n",
 								
 								"# sed -i -e 's/\r$//' $\"{WORKSPACE}\"//mule_environment_template/env-creation-scripts/SecurityScripts/certificates/ca.pem \n",
 								
