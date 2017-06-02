@@ -74,10 +74,10 @@
                             [
                                 "#!/bin/bash\n",
                                 "sudo su\n",
-                                "apt-get install git",
-                                "git clone https://pranjal7:pranjal09@github.com/pranjal7/digital-1-cartridges.git", 
+                                "yum install git \n",
+                                "git clone https://pranjal7:pranjal09@github.com/pranjal7/digital-1-cartridges.git \n", 
 								"/sbin/resize2fs /dev/xvda\n",
-                                "chmod 754 $\"{WORKSPACE}\"/mule_environment_template/env-creation-scripts/DevOpsScripts",
+                                "chmod 754 $\"{WORKSPACE}\"/mule_environment_template/env-creation-scripts/DevOpsScripts \n" ,
 
 								"sed -i -e 's/\r$//' $\"{WORKSPACE}\"/mule_environment_template/env-creation-scripts/DevOpsScripts/wrapperSetup.sh \n",
 								
