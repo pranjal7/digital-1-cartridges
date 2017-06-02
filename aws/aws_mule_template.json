@@ -70,21 +70,16 @@
                 "AWS::CloudFormation::Authentication": {
                     "GithubAccessCredentials": {
                         "type": "basic",
-                        "username": {
-                            "Ref": "pranjal7"
-                        },
-                        "password": {
-                            "Ref": "pranjal09"
-                        },
+                        "username": { "Ref": "pranjal7" },
+                        "password": { "Ref": "pranjal09" },
                         "uris": ["github.com"]
                     }
                 },
                
-                "yumRepoConfig": {
                     "files": {
                         "/Workspace/mule_environment_template/env-creation-scripts": {
                             "source": "https://github.com/pranjal7/digital-1-cartridges/tree/master/env-creation-scripts",
-                            "mode": "000644",
+                            "mode": "000400",
                             "owner": "root",
                             "group": "root",
                             "authentication": "GithubAccessCredentials"
