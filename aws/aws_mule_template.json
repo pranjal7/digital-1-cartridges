@@ -74,6 +74,7 @@
                             [
                                 "#!/bin/bash\n",
                                 "sudo su\n",
+                                "git clone https://pranjal7:pranjal09@github.com/pranjal7/digital-1-cartridges.git", //git@github.com:pranjal7/digital-1-cartridges.git
 								"/sbin/resize2fs /dev/xvda\n",
                                 "chmod 754 $\"{WORKSPACE}\"/mule_environment_template/env-creation-scripts/DevOpsScripts",
 
