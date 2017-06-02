@@ -104,11 +104,6 @@
                             [
                                 "#!/bin/bash\n",
                                 "sudo su\n",
-                                //"yum install git \n",
-                                //"git clone https://pranjal7:[password]@github.com/pranjal7/digital-1-cartridges.git \n", 
-                                //"myGithubLogin = "pranjal7"",
-                                //"myGithubPasswd = "pranjal09"",
-                                //"curl -u '$myGithubLogin' '$myGithubPasswd' -L -O https://github.com/pranjal7/digital-1-cartridges"
 								"/sbin/resize2fs /dev/xvda\n",
                                 "chmod 754 $\"{WORKSPACE}\"/mule_environment_template/env-creation-scripts/DevOpsScripts \n" ,
 
