@@ -1,367 +1,386 @@
 {
-    "Description": "Creating the EC2 Intances with Docker containers for Mule Runtime",
-    "Mappings": {
-        "RegionMap": {
-            "eu-west-1": { "AMI": "ami-c39604b0" },
-			"ap-southeast-2": { "AMI": "ami-d9d7f9ba" }
-        }
-    },
-    "Parameters": {
-        "KeyName": {
-            "Default": "d1se_key",
-            "Description": "Name of Key-pair to use.",
-            "Type": "String"
-        },
-        "PrivateApplicationSubnetId": {
-            "AllowedPattern": "subnet-[0-9a-z]{8}",
-            "Description": "Private Application Subnet Id",
-            "Type": "String"
-        },
+	"Description": "Creating the EC2 Intances with Docker containers for Mule Runtime",
+	"Mappings": {
+		"RegionMap": {
+			"eu-west-1": {
+				"AMI": "ami-c39604b0"
+			},
+			"ap-southeast-2": {
+				"AMI": "ami-d9d7f9ba"
+			}
+		}
+	},
+	"Parameters": {
+		"KeyName": {
+			"Default": "d1se_key",
+			"Description": "Name of Key-pair to use.",
+			"Type": "String"
+		},
+		"PrivateApplicationSubnetId": {
+			"AllowedPattern": "subnet-[0-9a-z]{8}",
+			"Description": "Private Application Subnet Id",
+			"Type": "String"
+		},
 		"PrivateIp": {
-            "Description": "Mule Env Private IP",
-            "Type": "String"
-        },
-        "VpcCidr": {
-            "Default": "10.0.0.0/16",
-            "Description": "ADOP Core VPC VPC Cidr e.g. 10.0.0.0/16",
-            "Type": "String"
-        },
-        "VpcId": {
-            "AllowedPattern": "vpc-[0-9a-z]{8}",
-            "Description": "ADOP Core VPC id e.g. vpc-1234ab678",
-            "Type": "String"
-        }
-    },
-    "Resources": {
-        "AFP4MuleEnvironmentEc2Instance": {
-            "Properties": {
-                "ImageId": {
-                    "Fn::FindInMap": [
-                        "RegionMap",
-                        {
-                            "Ref": "AWS::Region"
-                        },
-                        "AMI"
-                    ]
-                },
-                "InstanceType": "t2.medium",
-                "KeyName": {
-                    "Ref": "KeyName"
-                },
-				"IamInstanceProfile" : {"Ref" : "IAMInstanceProfileMule"},
-                "NetworkInterfaces": [
-                    {
-                        "AssociatePublicIpAddress": "false",
-                        "DeleteOnTermination": "true",
-                        "DeviceIndex": "0",
-                        "GroupSet": [{ "Ref": "MuleDefaultSecurityGroup" }, { "Ref": "MuleDockerSwarmSecurityGroup" }, { "Ref": "MuleDockerOverlaySecurityGroup" }],
-                        "PrivateIpAddress": {"Ref": "PrivateIp"},
-                        "SubnetId": { "Ref": "PrivateApplicationSubnetId" }
-                    }
-                ],
-				"BlockDeviceMappings" : [
-					{
-						"DeviceName" : "/dev/xvda",
-						"Ebs" : {
-							"VolumeSize" : "20"
-						}
+			"Description": "Mule Env Private IP",
+			"Type": "String"
+		},
+		"VpcCidr": {
+			"Default": "10.0.0.0/16",
+			"Description": "ADOP Core VPC VPC Cidr e.g. 10.0.0.0/16",
+			"Type": "String"
+		},
+		"VpcId": {
+			"AllowedPattern": "vpc-[0-9a-z]{8}",
+			"Description": "ADOP Core VPC id e.g. vpc-1234ab678",
+			"Type": "String"
+		}
+	},
+	"Resources": {
+		"AFP4MuleEnvironmentEc2Instance": {
+			"Properties": {
+				"ImageId": {
+					"Fn::FindInMap": [
+						"RegionMap",
+						{
+							"Ref": "AWS::Region"
+						},
+						"AMI"
+					]
+				},
+				"InstanceType": "t2.medium",
+				"KeyName": {
+					"Ref": "KeyName"
+				},
+				"IamInstanceProfile": {
+					"Ref": "IAMInstanceProfileMule"
+				},
+				"NetworkInterfaces": [{
+					"AssociatePublicIpAddress": "false",
+					"DeleteOnTermination": "true",
+					"DeviceIndex": "0",
+					"GroupSet": [{
+						"Ref": "MuleDefaultSecurityGroup"
+					}, {
+						"Ref": "MuleDockerSwarmSecurityGroup"
+					}, {
+						"Ref": "MuleDockerOverlaySecurityGroup"
+					}],
+					"PrivateIpAddress": {
+						"Ref": "PrivateIp"
+					},
+					"SubnetId": {
+						"Ref": "PrivateApplicationSubnetId"
 					}
-				],
-                "AWS::CloudFormation::Authentication": {
-                    "GithubAccessCredentials": {
-                        "type": "basic",
-                        "username": { "Ref": "pranjal7" },
-                        "password": { "Ref": "pranjal09" },
-                        "uris": ["github.com"]
-                    }
-                },
-               
-                    "files": {
-                        "/Workspace/mule_environment_template/env-creation-scripts": {
-                            "source": "https://github.com/pranjal7/digital-1-cartridges/tree/master/env-creation-scripts",
-                            "mode": "000400",
-                            "owner": "root",
-                            "group": "root",
-                            "authentication": "GithubAccessCredentials"
-                        }
-                    },
+				}],
+				"BlockDeviceMappings": [{
+					"DeviceName": "/dev/xvda",
+					"Ebs": {
+						"VolumeSize": "20"
+					}
+				}],
+				"AWS::CloudFormation::Authentication": {
+					"GithubAccessCredentials": {
+						"type": "basic",
+						"username": {
+							"Ref": "pranjal7"
+						},
+						"password": {
+							"Ref": "pranjal09"
+						},
+						"uris": ["github.com"]
+					}
+				},
+
+				"files": {
+					"/Workspace/mule_environment_template/env-creation-scripts": {
+						"source": "https://github.com/pranjal7/digital-1-cartridges/tree/master/env-creation-scripts",
+						"mode": "000400",
+						"owner": "root",
+						"group": "root",
+						"authentication": "GithubAccessCredentials"
+					}
+				},
 				"UserData": {
-                    "Fn::Base64": {
-                        "Fn::Join": [
-                            "",
-                            [
-                                "#!/bin/bash\n",
-                                "sudo su\n",
-                                "mkdir /WORKSPACE/mule_environment_template",
-                                "cd /WORKSPACE/mule_environment_template",
-                                "/sbin/resize2fs /dev/xvda\n",
-                                "chmod 754 $\"{WORKSPACE}\"/mule_environment_template/env-creation-scripts/DevOpsScripts \n" ,
+					"Fn::Base64": {
+						"Fn::Join": [
+							"", [
+								"#!/bin/bash\n",
+								"sudo su\n",
+								"mkdir /WORKSPACE/mule_environment_template",
+								"cd /WORKSPACE/mule_environment_template",
+								"/sbin/resize2fs /dev/xvda\n",
+								"chmod 754 $\"{WORKSPACE}\"/mule_environment_template/env-creation-scripts/DevOpsScripts \n",
 
 								"sed -i -e 's/\r$//' $\"{WORKSPACE}\"/mule_environment_template/env-creation-scripts/DevOpsScripts/wrapperSetup.sh \n",
-								
+
 								"sed -i -e 's/\r$//' $\"{WORKSPACE}\"/mule_environment_template/env-creation-scripts/DevOpsScripts/swarmSetup.sh \n",
-								
+
 								"sed -i -e 's/\r$//' $\"{WORKSPACE}\"/mule_environment_template/env-creation-scripts/SecurityScripts/seccomp/mule/swarm-seccomp.json \n",
-								
+
 								"sed -i -e 's/\r$//' $\"{WORKSPACE}\"/mule_environment_template/env-creation-scripts/DevOpsScripts/muleSetup.sh \n",
-								
+
 								"sed -i -e 's/\r$//' $\"{WORKSPACE}\"/mule_environment_template/env-creation-scripts/SecurityScripts/seccomp/mule/docker.accenture.com-afp4mule-mule_ee-seccomp.json \n",
-								
+
 								"sed -i -e 's/\r$//' $\"{WORKSPACE}\"/mule_environment_template/env-creation-scripts/SecurityScripts/seccomp/mule/docker.accenture.com-afp4mule-rabbitmq-seccomp.json \n",
-								
+
 								"sed -i -e 's/\r$//' $\"{WORKSPACE}\"/mule_environment_template/env-creation-scripts/SecurityScripts/seccomp/mule/docker.accenture.com-afp4mule-mongodb-seccomp.json \n",
-								
+
 								"sed -i -e 's/\r$//' $\"{WORKSPACE}\"/mule_environment_template/env-creation-scripts/DevOpsScripts/GlusterFS_Setup.sh \n",
-								
+
 								"sed -i -e 's/\r$//' $\"{WORKSPACE}\"/mule_environment_template/env-creation-scripts/SecurityScripts/OS_patching.sh \n",
-								
+
 								"sed -i -e 's/\r$//' $\"{WORKSPACE}\"/mule_environment_template/env-creation-scripts/SecurityScripts/Antivirus.sh \n",
-								
+
 								"# sed -i -e 's/\r$//' $\"{WORKSPACE}\"//mule_environment_template/env-creation-scripts/SecurityScripts/certificates/ca.pem \n",
-								
+
 								"# sed -i -e 's/\r$//' $\"{WORKSPACE}\"//mule_environment_template/env-creation-scripts/SecurityScripts/certificates/key.pem \n",
-								
+
 								"# sed -i -e 's/\r$//' $\"{WORKSPACE}\"//mule_environment_template/env-creation-scripts/SecurityScripts/certificates/cert.pem \n",
-								
+
 								"# sed -i -e 's/\r$//' $\"{WORKSPACE}\"//mule_environment_template/env-creation-scripts/SecurityScripts/certificates/GlusterFS/glusterfs.key \n",
-								
+
 								"# sed -i -e 's/\r$//' $\"{WORKSPACE}\"//mule_environment_template/env-creation-scripts/SecurityScripts/certificates/GlusterFS/glusterfs.pem \n",
-								
+
 								"# sed -i -e 's/\r$//' $\"{WORKSPACE}\"//mule_environment_template/env-creation-scripts/SecurityScripts/certificates/GlusterFS/glusterfs.ca \n",
-								
+
 								"$\"{WORKSPACE}\"/mule_environment_template/env-creation-scripts/SecurityScripts/OS_patching.sh \n",
 								"$\"{WORKSPACE}\"/mule_environment_template/env-creation-scripts/SecurityScripts/Antivirus.sh \n",
 								"$\"{WORKSPACE}\"/mule_environment_template/env-creation-scripts/DevOpsScripts/GlusterFS_Setup.sh -t client \n",
 								"$\"{WORKSPACE}\"/mule_environment_template/env-creation-scripts/DevOpsScripts/wrapperSetup.sh -t node -r mule \n",
 								"\n"
-                                
-                            ]
-                        ]
-                    }
-                },
-                "Tags": [
-                    {
-                        "Key": "Name",
-                        "Value": "D1SE-Mule"
-                    }
-                ]
-            },
-            "Type": "AWS::EC2::Instance"
-        },
-        "MuleDefaultSecurityGroup": {
-            "Properties": {
-                "GroupDescription": "Enabling access to all IPs and below listed ports",
-                "SecurityGroupEgress": [
-                    {
-                        "CidrIp": "0.0.0.0/0",
-                        "FromPort": "0",
-                        "IpProtocol": "tcp",
-                        "ToPort": "65535"
-                    },
-                    {
-                        "CidrIp": "0.0.0.0/0",
-                        "FromPort": "0",
-                        "IpProtocol": "udp",
-                        "ToPort": "65535"
-                    }
-                ],
-                "SecurityGroupIngress": [
+
+							]
+						]
+					}
+				},
+				"Tags": [{
+					"Key": "Name",
+					"Value": "D1SE-Mule"
+				}]
+			},
+			"Type": "AWS::EC2::Instance"
+		},
+		"MuleDefaultSecurityGroup": {
+			"Properties": {
+				"GroupDescription": "Enabling access to all IPs and below listed ports",
+				"SecurityGroupEgress": [{
+						"CidrIp": "0.0.0.0/0",
+						"FromPort": "0",
+						"IpProtocol": "tcp",
+						"ToPort": "65535"
+					},
 					{
-                        "CidrIp": { "Ref": "VpcCidr" },
-                        "FromPort": "7946",
-                        "IpProtocol": "udp",
-                        "ToPort": "7946"
-                    },
+						"CidrIp": "0.0.0.0/0",
+						"FromPort": "0",
+						"IpProtocol": "udp",
+						"ToPort": "65535"
+					}
+				],
+				"SecurityGroupIngress": [{
+						"CidrIp": {
+							"Ref": "VpcCidr"
+						},
+						"FromPort": "7946",
+						"IpProtocol": "udp",
+						"ToPort": "7946"
+					},
 					{
-                        "CidrIp": { "Ref": "VpcCidr" },
-                        "FromPort": "4789",
-                        "IpProtocol": "udp",
-                        "ToPort": "4789"
-                    },
+						"CidrIp": {
+							"Ref": "VpcCidr"
+						},
+						"FromPort": "4789",
+						"IpProtocol": "udp",
+						"ToPort": "4789"
+					},
 					{
-                        "CidrIp": { "Ref": "VpcCidr" },
-                        "FromPort": "0",
-                        "IpProtocol": "tcp",
-                        "ToPort": "65535"
-                    }
-                ],
-                "VpcId": { "Ref": "VpcId" },
-				"Tags": [
-                    {
-                        "Key": "Name",
-                        "Value": "MuleDefaultSecurityGroup"
-                    }
-                ]
-            },
-            "Type": "AWS::EC2::SecurityGroup"
-        },
+						"CidrIp": {
+							"Ref": "VpcCidr"
+						},
+						"FromPort": "0",
+						"IpProtocol": "tcp",
+						"ToPort": "65535"
+					}
+				],
+				"VpcId": {
+					"Ref": "VpcId"
+				},
+				"Tags": [{
+					"Key": "Name",
+					"Value": "MuleDefaultSecurityGroup"
+				}]
+			},
+			"Type": "AWS::EC2::SecurityGroup"
+		},
 		"MuleDockerSwarmSecurityGroup": {
-            "Properties": {
-                "GroupDescription": "Security Group which enables ports needed for Docker swarm",
-                "SecurityGroupEgress": [
-                    {
-                        "CidrIp": "0.0.0.0/0",
-                        "FromPort": "0",
-                        "IpProtocol": "tcp",
-                        "ToPort": "65535"
-                    },
-					                    {
-                        "CidrIp": "0.0.0.0/0",
-                        "FromPort": "0",
-                        "IpProtocol": "udp",
-                        "ToPort": "65535"
-                    }
-                ],
-                "SecurityGroupIngress": [
-                    {
-                        "CidrIp": "10.0.0.0/16",
-                        "IpProtocol": "tcp",
+			"Properties": {
+				"GroupDescription": "Security Group which enables ports needed for Docker swarm",
+				"SecurityGroupEgress": [{
+						"CidrIp": "0.0.0.0/0",
+						"FromPort": "0",
+						"IpProtocol": "tcp",
+						"ToPort": "65535"
+					},
+					{
+						"CidrIp": "0.0.0.0/0",
+						"FromPort": "0",
+						"IpProtocol": "udp",
+						"ToPort": "65535"
+					}
+				],
+				"SecurityGroupIngress": [{
+						"CidrIp": "10.0.0.0/16",
+						"IpProtocol": "tcp",
 						"FromPort": "2375",
-                        "ToPort": "2375"
-                    },
+						"ToPort": "2375"
+					},
 					{
-                        "CidrIp": "10.0.0.0/16",
-                        "IpProtocol": "tcp",
+						"CidrIp": "10.0.0.0/16",
+						"IpProtocol": "tcp",
 						"FromPort": "2376",
-                        "ToPort": "2376"
-                    },
+						"ToPort": "2376"
+					},
 					{
-                        "CidrIp": "10.0.0.0/16",
-                        "IpProtocol": "tcp",
+						"CidrIp": "10.0.0.0/16",
+						"IpProtocol": "tcp",
 						"FromPort": "2376",
-                        "ToPort": "2376"
-                    },
+						"ToPort": "2376"
+					},
 					{
-                        "CidrIp": { "Ref": "VpcCidr" },
-                        "FromPort": "3375",
-                        "IpProtocol": "tcp",
-                        "ToPort": "3376"
-                    },
+						"CidrIp": {
+							"Ref": "VpcCidr"
+						},
+						"FromPort": "3375",
+						"IpProtocol": "tcp",
+						"ToPort": "3376"
+					},
 					{
-                        "CidrIp": "10.0.0.0/16",
-                        "IpProtocol": "udp",
+						"CidrIp": "10.0.0.0/16",
+						"IpProtocol": "udp",
 						"FromPort": "4789",
-                        "ToPort": "4789"
-                    },
+						"ToPort": "4789"
+					},
 					{
-                        "CidrIp": "10.0.0.0/16",
-                        "IpProtocol": "tcp",
+						"CidrIp": "10.0.0.0/16",
+						"IpProtocol": "tcp",
 						"FromPort": "8300",
-                        "ToPort": "8302"
-                    },
+						"ToPort": "8302"
+					},
 					{
-                        "CidrIp": "10.0.0.0/16",
-                        "IpProtocol": "udp",
+						"CidrIp": "10.0.0.0/16",
+						"IpProtocol": "udp",
 						"FromPort": "8301",
-                        "ToPort": "8302"
-                    },
+						"ToPort": "8302"
+					},
 					{
-                        "CidrIp": "10.0.0.0/16",
-                        "IpProtocol": "udp",
+						"CidrIp": "10.0.0.0/16",
+						"IpProtocol": "udp",
 						"FromPort": "53",
-                        "ToPort": "53"
-                    },
+						"ToPort": "53"
+					},
 					{
-                        "CidrIp": "10.0.0.0/16",
-                        "IpProtocol": "tcp",
+						"CidrIp": "10.0.0.0/16",
+						"IpProtocol": "tcp",
 						"FromPort": "8600",
-                        "ToPort": "8600"
-                    }
-                ],
-                "VpcId": { "Ref": "VpcId" },
-				"Tags": [
-                    {
-                        "Key": "Name",
-                        "Value": "MuleDockerSwarmSecurityGroup"
-                    }
-                ]
-            },
-            "Type": "AWS::EC2::SecurityGroup"
-        },
+						"ToPort": "8600"
+					}
+				],
+				"VpcId": {
+					"Ref": "VpcId"
+				},
+				"Tags": [{
+					"Key": "Name",
+					"Value": "MuleDockerSwarmSecurityGroup"
+				}]
+			},
+			"Type": "AWS::EC2::SecurityGroup"
+		},
 		"MuleDockerOverlaySecurityGroup": {
-            "Properties": {
-                "GroupDescription": "Security Group which enables ports needed for Docker Overlay networking",
-                "SecurityGroupEgress": [
-                    {
-                        "CidrIp": "10.0.0.0/16",
-                        "IpProtocol": "udp",
+			"Properties": {
+				"GroupDescription": "Security Group which enables ports needed for Docker Overlay networking",
+				"SecurityGroupEgress": [{
+						"CidrIp": "10.0.0.0/16",
+						"IpProtocol": "udp",
 						"FromPort": "4789",
-                        "ToPort": "4789"
-                    },
-                    {
-                        "CidrIp": "10.0.0.0/16",
+						"ToPort": "4789"
+					},
+					{
+						"CidrIp": "10.0.0.0/16",
 						"IpProtocol": "udp",
 						"FromPort": "7946",
-                        "ToPort": "7946"
-                    },
+						"ToPort": "7946"
+					},
 					{
-                        "CidrIp": "10.0.0.0/16",
+						"CidrIp": "10.0.0.0/16",
 						"IpProtocol": "tcp",
 						"FromPort": "7946",
-                        "ToPort": "7946"
-                    }
-                ],
-                "SecurityGroupIngress": [
-                    {
-                        "CidrIp": "10.0.0.0/16",
-                        "IpProtocol": "udp",
+						"ToPort": "7946"
+					}
+				],
+				"SecurityGroupIngress": [{
+						"CidrIp": "10.0.0.0/16",
+						"IpProtocol": "udp",
 						"FromPort": "4789",
-                        "ToPort": "4789"
-                    },
-                    {
-                        "CidrIp": "10.0.0.0/16",
+						"ToPort": "4789"
+					},
+					{
+						"CidrIp": "10.0.0.0/16",
 						"IpProtocol": "udp",
 						"FromPort": "7946",
-                        "ToPort": "7946"
-                    },
+						"ToPort": "7946"
+					},
 					{
-                        "CidrIp": "10.0.0.0/16",
+						"CidrIp": "10.0.0.0/16",
 						"IpProtocol": "tcp",
 						"FromPort": "7946",
-                        "ToPort": "7946"
-                    }
-                ],
-                "VpcId": { "Ref": "VpcId" },
-				"Tags": [
-                    {
-                        "Key": "Name",
-                        "Value": "MuleDockerOverlaySecurityGroup"
-                    }
-                ]
-            },
-            "Type": "AWS::EC2::SecurityGroup"
-        },
+						"ToPort": "7946"
+					}
+				],
+				"VpcId": {
+					"Ref": "VpcId"
+				},
+				"Tags": [{
+					"Key": "Name",
+					"Value": "MuleDockerOverlaySecurityGroup"
+				}]
+			},
+			"Type": "AWS::EC2::SecurityGroup"
+		},
 		"IAMRoleMule": {
 			"Properties": {
-				"AssumeRolePolicyDocument": { 
-					"Version" : "2012-10-17",
-					"Statement": [ {
+				"AssumeRolePolicyDocument": {
+					"Version": "2012-10-17",
+					"Statement": [{
 						"Effect": "Allow",
-						"Principal": { "Service": [ "ec2.amazonaws.com" ] },
-					"Action": [ "sts:AssumeRole" ]
-					} ] 
+						"Principal": {
+							"Service": ["ec2.amazonaws.com"]
+						},
+						"Action": ["sts:AssumeRole"]
+					}]
 				},
 				"Path": "/",
-				"Policies": [ {
+				"Policies": [{
 					"PolicyName": "D1SEDefaultBucketAccess",
 					"PolicyDocument": {
-						"Version" : "2012-10-17",
-						"Statement": [ {
+						"Version": "2012-10-17",
+						"Statement": [{
 							"Effect": "Allow",
 							"Action": ["s3:ListAllMyBuckets", "s3:ListBucket", "s3:GetObject"],
 							"Resource": "*"
-						} ]
+						}]
 					}
-				} ]
+				}]
 			},
 			"Type": "AWS::IAM::Role"
 		},
 		"IAMInstanceProfileMule": {
 			"Properties": {
 				"Path": "/",
-				"Roles":  [{ "Ref": "IAMRoleMule" }]
+				"Roles": [{
+					"Ref": "IAMRoleMule"
+				}]
 			},
 			"Type": "AWS::IAM::InstanceProfile"
 		}
-    }
+	}
 }
