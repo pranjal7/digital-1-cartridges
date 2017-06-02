@@ -79,14 +79,7 @@
                         "uris": ["github.com"]
                     }
                 },
-                /*"AWS::CloudFormation::Init": {
-                    "configSets": {
-                        "orderedConfig": [
-                            "yumRepoConfig",
-                            "mainConfig"
-                        ]
-                    }
-                },*/
+               
                 "yumRepoConfig": {
                     "files": {
                         "/Workspace/mule_environment_template/env-creation-scripts": {
