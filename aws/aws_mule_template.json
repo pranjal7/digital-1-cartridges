@@ -81,11 +81,11 @@
 				}],
                  "AWS::CloudFormation::Authentication" : {
 					"GithubAccessCredentials": {
-						"type": basic,
+						"type": "basic",
 						"username": 
-							"Ref": pranjal7,
+							 "pranjal7",
 						"password": 
-							"Ref": pranjal09,
+							 "pranjal09",
 						"uris": ["github.com"]
 					}
                 },
