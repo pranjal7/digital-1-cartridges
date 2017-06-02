@@ -92,11 +92,9 @@
                             [
                                 "#!/bin/bash\n",
                                 "sudo su\n",
-                                "sudo yum install git",
                                 "mkdir /WORKSPACE/mule_environment_template",
                                 "cd /WORKSPACE/mule_environment_template",
-                                "git clone https://pranjal7:pranjal09@github.com/pranjal7/digital-1-cartridges.git",
-								"/sbin/resize2fs /dev/xvda\n",
+                                "/sbin/resize2fs /dev/xvda\n",
                                 "chmod 754 $\"{WORKSPACE}\"/mule_environment_template/env-creation-scripts/DevOpsScripts \n" ,
 
 								"sed -i -e 's/\r$//' $\"{WORKSPACE}\"/mule_environment_template/env-creation-scripts/DevOpsScripts/wrapperSetup.sh \n",
