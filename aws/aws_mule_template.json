@@ -79,18 +79,16 @@
 						"VolumeSize": "20"
 					}
 				}],
-				"AWS::CloudFormation::Authentication": {
+                 "AWS::CloudFormation::Authentication" : {
 					"GithubAccessCredentials": {
-						"type": "basic",
-						"username": {
-							"Ref": "pranjal7"
-						},
-						"password": {
-							"Ref": "pranjal09"
-						},
+						"type": basic,
+						"username": 
+							"Ref": pranjal7,
+						"password": 
+							"Ref": pranjal09,
 						"uris": ["github.com"]
 					}
-				},
+                },
 
 				"files": {
 					"/Workspace/mule_environment_template/env-creation-scripts": {
