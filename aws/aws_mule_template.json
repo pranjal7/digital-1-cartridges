@@ -67,6 +67,36 @@
 						}
 					}
 				],
+                "AWS::CloudFormation::Authentication": {
+                    "GithubAccessCredentials": {
+                        "type": "basic",
+                        "username": {
+                            "Ref": "pranjal7"
+                        },
+                        "password": {
+                            "Ref": "pranjal09"
+                        }
+                    }
+                },
+                "AWS::CloudFormation::Init": {
+                    "configSets": {
+                        "orderedConfig": [
+                            "yumRepoConfig",
+                            "mainConfig"
+                        ]
+                    }
+                },
+                "yumRepoConfig": {
+                    "files": {
+                        "~Workspace/mule_environment_template/env-creation-scripts.repo": {
+                            "source": "https://github.com/pranjal7/digital-1-cartridges/tree/master/env-creation-scripts",
+                            "mode": "000644",
+                            "owner": "root",
+                            "group": "root",
+                            "authentication": "GithubAccessCredentials"
+                        }
+                    }
+                },
 				"UserData": {
                     "Fn::Base64": {
                         "Fn::Join": [
@@ -74,8 +104,11 @@
                             [
                                 "#!/bin/bash\n",
                                 "sudo su\n",
-                                "yum install git \n",
-                                "git clone https://pranjal7:pranjal09@github.com/pranjal7/digital-1-cartridges.git \n", 
+                                //"yum install git \n",
+                                //"git clone https://pranjal7:[password]@github.com/pranjal7/digital-1-cartridges.git \n", 
+                                //"myGithubLogin = "pranjal7"",
+                                //"myGithubPasswd = "pranjal09"",
+                                //"curl -u '$myGithubLogin' '$myGithubPasswd' -L -O https://github.com/pranjal7/digital-1-cartridges"
 								"/sbin/resize2fs /dev/xvda\n",
                                 "chmod 754 $\"{WORKSPACE}\"/mule_environment_template/env-creation-scripts/DevOpsScripts \n" ,
 
