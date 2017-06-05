@@ -75,9 +75,9 @@
                                 "#!/bin/bash\n",
                                 "sudo su\n",
 								"/sbin/resize2fs /dev/xvda\n",
-								"date=$(date '+%d%m%Y')",
-								"S3_name=$(aws s3 ls | grep $date)",
-								"aws s3 cp s3://${S3_name} /home/ec2-user \n",
+								"#date=$(date '+%d%m%Y')",
+								"#S3_name=$(aws s3 ls | grep $date)",
+								"aws s3 cp s3://pranjal123456789 /home/ec2-user \n",
 
 								"chmod 754 /home/ec2-user/DevOpsScripts/wrapperSetup.sh \n",
 								"sed -i -e 's/\r$//' /home/ec2-user/DevOpsScripts/wrapperSetup.sh \n",
