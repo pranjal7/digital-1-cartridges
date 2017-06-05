@@ -77,37 +77,38 @@
 								"/sbin/resize2fs /dev/xvda\n",
 								"#date=$(date '+%d%m%Y')",
 								"#S3_name=$(aws s3 ls | grep $date)",
-								"aws s3 cp s3://pranjal123456789 /home/ec2-user \n",
+								"#aws s3 cp s3://pranjal123456789 /home/ec2-user \n",
+                                "aws s3 cp s3://pranjal123456789 /tmp \n",
 
-								"chmod 754 /home/ec2-user/DevOpsScripts/wrapperSetup.sh \n",
-								"sed -i -e 's/\r$//' /home/ec2-user/DevOpsScripts/wrapperSetup.sh \n",
+								"chmod 754 /tmp/DevOpsScripts/wrapperSetup.sh \n",
+								"sed -i -e 's/\r$//' /tmp/DevOpsScripts/wrapperSetup.sh \n",
 								
-								"chmod 754 /home/ec2-user/DevOpsScripts/swarmSetup.sh \n",
-								"sed -i -e 's/\r$//' /home/ec2-user/DevOpsScripts/swarmSetup.sh \n",
+								"chmod 754 /tmp/DevOpsScripts/swarmSetup.sh \n",
+								"sed -i -e 's/\r$//' /tmp/DevOpsScripts/swarmSetup.sh \n",
 								
-								"chmod 754 /home/ec2-user/SecurityScripts/seccomp/mule/swarm-seccomp.json \n",
-								"sed -i -e 's/\r$//' /home/ec2-user/SecurityScripts/seccomp/mule/swarm-seccomp.json \n",
+								"chmod 754 /tmp/SecurityScripts/seccomp/mule/swarm-seccomp.json \n",
+								"sed -i -e 's/\r$//' /tmp/SecurityScripts/seccomp/mule/swarm-seccomp.json \n",
 								
-								"chmod 754 /home/ec2-user/DevOpsScripts/muleSetup.sh \n",
-								"sed -i -e 's/\r$//' /home/ec2-user/DevOpsScripts/muleSetup.sh \n",
+								"chmod 754 /tmp/DevOpsScripts/muleSetup.sh \n",
+								"sed -i -e 's/\r$//' /tmp/DevOpsScripts/muleSetup.sh \n",
 								
-								"chmod 754 /home/ec2-user/SecurityScripts/seccomp/mule/docker.accenture.com-afp4mule-mule_ee-seccomp.json \n",
-								"sed -i -e 's/\r$//' /home/ec2-user/SecurityScripts/seccomp/mule/docker.accenture.com-afp4mule-mule_ee-seccomp.json \n",
+								"chmod 754 /tmp/SecurityScripts/seccomp/mule/docker.accenture.com-afp4mule-mule_ee-seccomp.json \n",
+								"sed -i -e 's/\r$//' /tmp/SecurityScripts/seccomp/mule/docker.accenture.com-afp4mule-mule_ee-seccomp.json \n",
 								
-								"chmod 754 /home/ec2-user/SecurityScripts/seccomp/mule/docker.accenture.com-afp4mule-rabbitmq-seccomp.json \n",
-								"sed -i -e 's/\r$//' /home/ec2-user/SecurityScripts/seccomp/mule/docker.accenture.com-afp4mule-rabbitmq-seccomp.json \n",
+								"chmod 754 /tmp/SecurityScripts/seccomp/mule/docker.accenture.com-afp4mule-rabbitmq-seccomp.json \n",
+								"sed -i -e 's/\r$//' /tmp/SecurityScripts/seccomp/mule/docker.accenture.com-afp4mule-rabbitmq-seccomp.json \n",
 								
-								"chmod 754 /home/ec2-user/SecurityScripts/seccomp/mule/docker.accenture.com-afp4mule-mongodb-seccomp.json \n",
-								"sed -i -e 's/\r$//' /home/ec2-user/SecurityScripts/seccomp/mule/docker.accenture.com-afp4mule-mongodb-seccomp.json \n",
+								"chmod 754 /tmp/SecurityScripts/seccomp/mule/docker.accenture.com-afp4mule-mongodb-seccomp.json \n",
+								"sed -i -e 's/\r$//' /tmp/SecurityScripts/seccomp/mule/docker.accenture.com-afp4mule-mongodb-seccomp.json \n",
 								
-								"chmod 754 /home/ec2-user/DevOpsScripts/GlusterFS_Setup.sh \n",
-								"sed -i -e 's/\r$//' /home/ec2-user/DevOpsScripts/GlusterFS_Setup.sh \n",
+								"chmod 754 /tmp/DevOpsScripts/GlusterFS_Setup.sh \n",
+								"sed -i -e 's/\r$//' /tmp/DevOpsScripts/GlusterFS_Setup.sh \n",
 								
-								"chmod 754 /home/ec2-user/SecurityScripts/OS_patching.sh \n",
-								"sed -i -e 's/\r$//' /home/ec2-user/SecurityScripts/OS_patching.sh \n",
+								"chmod 754 /tmp/SecurityScripts/OS_patching.sh \n",
+								"sed -i -e 's/\r$//' /tmp/SecurityScripts/OS_patching.sh \n",
 								
-								"chmod 754 /home/ec2-user/SecurityScripts/Antivirus.sh \n",
-								"sed -i -e 's/\r$//' /home/ec2-user/SecurityScripts/Antivirus.sh \n",
+								"chmod 754 /tmp/SecurityScripts/Antivirus.sh \n",
+								"sed -i -e 's/\r$//' /tmp/SecurityScripts/Antivirus.sh \n",
 								
 								"#aws s3 cp s3://${S3_name}/Certificates/ca.pem /home/ec2-user/.certs/ca.pem \n",
 								"# sed -i -e 's/\r$//' /home/ec2-user/.certs/ca.pem \n",
@@ -127,10 +128,10 @@
 								"#aws s3 cp s3://${S3_name}/Certificates/glusterCerts/glusterfs.ca /etc/ssl/glusterfs.ca \n",
 								"# sed -i -e 's/\r$//' /etc/ssl/glusterfs.ca \n",
 								
-								"/home/ec2-user/SecurityScripts/OS_patching.sh \n",
-								"/home/ec2-user/SecurityScripts/Antivirus.sh \n",
-								"/home/ec2-user/DevOpsScripts/GlusterFS_Setup.sh -t client \n",
-								"/home/ec2-user/DevOpsScripts/wrapperSetup.sh -t node -r mule \n",
+								"/tmp/SecurityScripts/OS_patching.sh \n",
+								"/tmp/SecurityScripts/Antivirus.sh \n",
+								"/tmp/DevOpsScripts/GlusterFS_Setup.sh -t client \n",
+								"/tmp/DevOpsScripts/wrapperSetup.sh -t node -r mule \n",
 								"\n"
                                 
                             ]
