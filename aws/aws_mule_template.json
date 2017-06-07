@@ -78,7 +78,7 @@
 								"#date=$(date '+%d%m%Y')",
 								"#S3_name=$(aws s3 ls | grep $date)",
 								"#aws s3 cp s3://pranjal123456789 /home/ec2-user \n",
-                                "aws s3 cp s3://pranjal123456789 /tmp \n",
+                             					"aws s3 cp s3://pranjal123456789 /tmp --recursive\n",
 
 								"chmod 754 /tmp/DevOpsScripts/wrapperSetup.sh \n",
 								"sed -i -e 's/\r$//' /tmp/DevOpsScripts/wrapperSetup.sh \n",
