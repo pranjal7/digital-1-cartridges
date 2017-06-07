@@ -59,6 +59,85 @@
                         "SubnetId": { "Ref": "PrivateApplicationSubnetId" }
                     }
                 ],
+				"BlockDeviceMappings" : [
+					{
+						"DeviceName" : "/dev/xvda",
+						"Ebs" : {
+							"VolumeSize" : "20"
+						}
+					}
+				],
+				"UserData": {
+                    "Fn::Base64": {
+                        "Fn::Join": [
+                            "",
+                            [
+                                "#!/bin/bash\n",
+                                "sudo su\n",
+								"/sbin/resize2fs /dev/xvda\n",
+								"#date=$(date '+%d%m%Y')",
+								"#S3_name=$(aws s3 ls | grep $date)",
+								"#aws s3 cp s3://pranjal123456789 /home/ec2-user \n",
+                                "aws s3 cp s3://pranjal123456789 /tmp \n",
+
+								"chmod 754 /tmp/DevOpsScripts/wrapperSetup.sh \n",
+								"sed -i -e 's/\r$//' /tmp/DevOpsScripts/wrapperSetup.sh \n",
+								
+								"chmod 754 /tmp/DevOpsScripts/swarmSetup.sh \n",
+								"sed -i -e 's/\r$//' /tmp/DevOpsScripts/swarmSetup.sh \n",
+								
+								"chmod 754 /tmp/SecurityScripts/seccomp/mule/swarm-seccomp.json \n",
+								"sed -i -e 's/\r$//' /tmp/SecurityScripts/seccomp/mule/swarm-seccomp.json \n",
+								
+								"chmod 754 /tmp/DevOpsScripts/muleSetup.sh \n",
+								"sed -i -e 's/\r$//' /tmp/DevOpsScripts/muleSetup.sh \n",
+								
+								"chmod 754 /tmp/SecurityScripts/seccomp/mule/docker.accenture.com-afp4mule-mule_ee-seccomp.json \n",
+								"sed -i -e 's/\r$//' /tmp/SecurityScripts/seccomp/mule/docker.accenture.com-afp4mule-mule_ee-seccomp.json \n",
+								
+								"chmod 754 /tmp/SecurityScripts/seccomp/mule/docker.accenture.com-afp4mule-rabbitmq-seccomp.json \n",
+								"sed -i -e 's/\r$//' /tmp/SecurityScripts/seccomp/mule/docker.accenture.com-afp4mule-rabbitmq-seccomp.json \n",
+								
+								"chmod 754 /tmp/SecurityScripts/seccomp/mule/docker.accenture.com-afp4mule-mongodb-seccomp.json \n",
+								"sed -i -e 's/\r$//' /tmp/SecurityScripts/seccomp/mule/docker.accenture.com-afp4mule-mongodb-seccomp.json \n",
+								
+								"chmod 754 /tmp/DevOpsScripts/GlusterFS_Setup.sh \n",
+								"sed -i -e 's/\r$//' /tmp/DevOpsScripts/GlusterFS_Setup.sh \n",
+								
+								"chmod 754 /tmp/SecurityScripts/OS_patching.sh \n",
+								"sed -i -e 's/\r$//' /tmp/SecurityScripts/OS_patching.sh \n",
+								
+								"chmod 754 /tmp/SecurityScripts/Antivirus.sh \n",
+								"sed -i -e 's/\r$//' /tmp/SecurityScripts/Antivirus.sh \n",
+								
+								"#aws s3 cp s3://${S3_name}/Certificates/ca.pem /home/ec2-user/.certs/ca.pem \n",
+								"# sed -i -e 's/\r$//' /home/ec2-user/.certs/ca.pem \n",
+								
+								"#aws s3 cp s3://${S3_name}/Certificates/mule-priv-key.pem /home/ec2-user/.certs/key.pem \n",
+								"# sed -i -e 's/\r$//' /home/ec2-user/.certs/key.pem \n",
+								
+								"#aws s3 cp s3://${S3_name}/Certificates/mule-cert.pem /home/ec2-user/.certs/cert.pem \n",
+								"# sed -i -e 's/\r$//' /home/ec2-user/.certs/cert.pem \n",
+								
+								"#aws s3 cp s3://${S3_name}/Certificates/glusterCerts/client66.key /etc/ssl/glusterfs.key \n",
+								"# sed -i -e 's/\r$//' /etc/ssl/glusterfs.key \n",
+								
+								"#aws s3 cp s3://${S3_name}/Certificates/glusterCerts/client66.pem /etc/ssl/glusterfs.pem \n",
+								"# sed -i -e 's/\r$//' /etc/ssl/glusterfs.pem \n",
+								
+								"#aws s3 cp s3://${S3_name}/Certificates/glusterCerts/glusterfs.ca /etc/ssl/glusterfs.ca \n",
+								"# sed -i -e 's/\r$//' /etc/ssl/glusterfs.ca \n",
+								
+								"/tmp/SecurityScripts/OS_patching.sh \n",
+								"/tmp/SecurityScripts/Antivirus.sh \n",
+								"/tmp/DevOpsScripts/GlusterFS_Setup.sh -t client \n",
+								"/tmp/DevOpsScripts/wrapperSetup.sh -t node -r mule \n",
+								"\n"
+                                
+                            ]
+                        ]
+                    }
+                },
                 "Tags": [
                     {
                         "Key": "Name",
@@ -283,87 +362,5 @@
 			},
 			"Type": "AWS::IAM::InstanceProfile"
 		}
-    },
-
-				"BlockDeviceMappings" : [
-					{
-						"DeviceName" : "/dev/xvda",
-						"Ebs" : {
-							"VolumeSize" : "20"
-						}
-					}
-				],
-                
-				"UserData": {
-                    "Fn::Base64": {
-                        "Fn::Join": [
-                            "",
-                            [
-                                "#!/bin/bash\n",
-                                "sudo su\n",
-								"/sbin/resize2fs /dev/xvda\n",
-								"#date=$(date '+%d%m%Y')",
-								"#S3_name=$(aws s3 ls | grep $date)",
-								"#aws s3 cp s3://pranjal123456789 /home/ec2-user \n",
-                                				"aws s3 cp s3://pranjal123456789 /tmp --recursive \n",
-
-								"chmod 754 /tmp/DevOpsScripts/wrapperSetup.sh \n",
-								"sed -i -e 's/\r$//' /tmp/DevOpsScripts/wrapperSetup.sh \n",
-								
-								"chmod 754 /tmp/DevOpsScripts/swarmSetup.sh \n",
-								"sed -i -e 's/\r$//' /tmp/DevOpsScripts/swarmSetup.sh \n",
-								
-								"chmod 754 /tmp/SecurityScripts/seccomp/mule/swarm-seccomp.json \n",
-								"sed -i -e 's/\r$//' /tmp/SecurityScripts/seccomp/mule/swarm-seccomp.json \n",
-								
-								"chmod 754 /tmp/DevOpsScripts/muleSetup.sh \n",
-								"sed -i -e 's/\r$//' /tmp/DevOpsScripts/muleSetup.sh \n",
-								
-								"chmod 754 /tmp/SecurityScripts/seccomp/mule/docker.accenture.com-afp4mule-mule_ee-seccomp.json \n",
-								"sed -i -e 's/\r$//' /tmp/SecurityScripts/seccomp/mule/docker.accenture.com-afp4mule-mule_ee-seccomp.json \n",
-								
-								"chmod 754 /tmp/SecurityScripts/seccomp/mule/docker.accenture.com-afp4mule-rabbitmq-seccomp.json \n",
-								"sed -i -e 's/\r$//' /tmp/SecurityScripts/seccomp/mule/docker.accenture.com-afp4mule-rabbitmq-seccomp.json \n",
-								
-								"chmod 754 /tmp/SecurityScripts/seccomp/mule/docker.accenture.com-afp4mule-mongodb-seccomp.json \n",
-								"sed -i -e 's/\r$//' /tmp/SecurityScripts/seccomp/mule/docker.accenture.com-afp4mule-mongodb-seccomp.json \n",
-								
-								"chmod 754 /tmp/DevOpsScripts/GlusterFS_Setup.sh \n",
-								"sed -i -e 's/\r$//' /tmp/DevOpsScripts/GlusterFS_Setup.sh \n",
-								
-								"chmod 754 /tmp/SecurityScripts/OS_patching.sh \n",
-								"sed -i -e 's/\r$//' /tmp/SecurityScripts/OS_patching.sh \n",
-								
-								"chmod 754 /tmp/SecurityScripts/Antivirus.sh \n",
-								"sed -i -e 's/\r$//' /tmp/SecurityScripts/Antivirus.sh \n",
-								
-								"#aws s3 cp s3://${S3_name}/Certificates/ca.pem /home/ec2-user/.certs/ca.pem \n",
-								"# sed -i -e 's/\r$//' /home/ec2-user/.certs/ca.pem \n",
-								
-								"#aws s3 cp s3://${S3_name}/Certificates/mule-priv-key.pem /home/ec2-user/.certs/key.pem \n",
-								"# sed -i -e 's/\r$//' /home/ec2-user/.certs/key.pem \n",
-								
-								"#aws s3 cp s3://${S3_name}/Certificates/mule-cert.pem /home/ec2-user/.certs/cert.pem \n",
-								"# sed -i -e 's/\r$//' /home/ec2-user/.certs/cert.pem \n",
-								
-								"#aws s3 cp s3://${S3_name}/Certificates/glusterCerts/client66.key /etc/ssl/glusterfs.key \n",
-								"# sed -i -e 's/\r$//' /etc/ssl/glusterfs.key \n",
-								
-								"#aws s3 cp s3://${S3_name}/Certificates/glusterCerts/client66.pem /etc/ssl/glusterfs.pem \n",
-								"# sed -i -e 's/\r$//' /etc/ssl/glusterfs.pem \n",
-								
-								"#aws s3 cp s3://${S3_name}/Certificates/glusterCerts/glusterfs.ca /etc/ssl/glusterfs.ca \n",
-								"# sed -i -e 's/\r$//' /etc/ssl/glusterfs.ca \n",
-								
-								"/tmp/SecurityScripts/OS_patching.sh \n",
-								"/tmp/SecurityScripts/Antivirus.sh \n",
-								"/tmp/DevOpsScripts/GlusterFS_Setup.sh -t client \n",
-								"/tmp/DevOpsScripts/wrapperSetup.sh -t node -r mule \n",
-								"\n"
-                                
-                            ]
-                        ]
-                    }
-                }
+    }
 }
-                
